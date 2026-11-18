@@ -1362,12 +1362,10 @@ let ytMounted=false;
    a file opened from disk, an app preview or a sandboxed frame has none, so only embed on an http(s) page with a real origin. */
 const WEB_ORIGIN=/^https?:$/.test(location.protocol)&&!!window.origin&&window.origin!=='null';
 function ytFallback(){const y=$('#plScreen .yt');if(y)y.remove();const fb=$('#plScreen .pl-fallback');if(fb)fb.hidden=false;const pl=$('#player');if(pl)pl.classList.remove('live');const m=$('#plMode');if(m)m.textContent='HD ✦';}
-function probe(url,ms){return new Promise(res=>{if(PREVIEW_HOST)return res(false);const i=new Image(),t=setTimeout(()=>res(false),ms);i.onload=()=>{clearTimeout(t);res(true);};i.onerror=()=>{clearTimeout(t);res(false);};i.src=url+'?t='+Date.now();});}
 function mountYT(){
   if(ytMounted)return;ytMounted=true;
-  if(!WEB_ORIGIN||PREVIEW_HOST)return;
-  probe('https://www.youtube.com/favicon.ico',4000).then(ok=>{
-    if(!ok||frameBlocked)return;
+  if(!WEB_ORIGIN||PREVIEW_HOST||frameBlocked)return;
+  {
     const scr=$('#plScreen');if(!scr)return;
     const f=document.createElement('iframe');f.className='yt';f.title='露露的作品集（YouTube 播放清單）';
     f.src='https://www.youtube.com/embed/videoseries?list='+YT_LIST+'&rel=0';
@@ -1375,7 +1373,7 @@ function mountYT(){
     f.referrerPolicy='strict-origin-when-cross-origin';f.allowFullscreen=true;
     f.addEventListener('load',()=>setTimeout(()=>{if(frameBlocked){ytFallback();return;}f.classList.add('on');const fb=$('#plScreen .pl-fallback');if(fb)fb.hidden=true;$('#player').classList.add('live');$('#plMode').textContent='PLAYLIST ▶';},250));
     scr.appendChild(f);
-  });
+  }
 }
 
 /* ---------- scroll reveal ---------- */
