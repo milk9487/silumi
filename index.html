@@ -306,9 +306,14 @@ html:not(.js) .cut .wline{stroke-dashoffset:0}
 .tick span i{font-style:normal;color:var(--pink)}
 @keyframes marq{to{transform:translateX(-50%)}}
 
-.inkbar{display:grid;grid-template-columns:290px 1fr;align-items:stretch;margin:70px 0 0}
-.inkbar .slashes{width:100%;height:100%;min-height:110px}
-.ib{background:var(--ink);color:#fff;display:grid;grid-template-columns:auto auto 1fr;gap:28px 46px;padding:22px 34px 22px 120px;clip-path:polygon(84px 0,100% 0,100% 100%,0 100%);margin-left:-120px;border-radius:0 0 0 0}
+.inkbar{margin:70px 0 0}
+.ib{display:grid;grid-template-columns:auto auto auto 1fr;align-items:center;gap:28px 46px;padding:24px 34px 24px 66px;background:var(--ink);color:#fff;clip-path:polygon(36px 0,100% 0,100% 100%,0 100%)}
+.ib-stripes{display:flex;gap:7px;height:68px;padding-right:4px}
+.ib-stripes i{display:block;width:11px;height:100%;background:var(--pink);transform:skewX(-20deg);transform-origin:bottom}
+.ib-stripes i:nth-child(2){background:var(--pink-2)}
+.ib-stripes i:nth-child(3){background:#fff}
+.inkbar.in .ib-stripes i{animation:stripeIn .6s var(--snap) both;animation-delay:calc(.25s + var(--n,0) * 90ms)}
+@keyframes stripeIn{from{transform:skewX(-20deg) scaleY(0)}to{transform:skewX(-20deg)}}
 .ib-c{display:grid;align-content:center;gap:2px}
 .ib-c small{font-size:11.5px;font-weight:600;letter-spacing:.06em}
 .ib-c b{font-weight:600;font-size:40px;line-height:1;letter-spacing:-.03em}
@@ -592,9 +597,8 @@ html:not(.js) .cut .wline{stroke-dashoffset:0}
   .steps{grid-template-columns:repeat(2,1fr)}
   .about-grid,.qa,.works{grid-template-columns:1fr}
   .w-side{grid-template-rows:none;grid-template-columns:1fr 1fr}
-  .ib{grid-template-columns:auto auto;padding-left:110px}
+  .ib{grid-template-columns:auto auto auto;padding-left:58px}
   .ib-t{grid-column:1/-1}
-  .inkbar{grid-template-columns:200px 1fr}
 }
 @media (max-width:720px){
   .wrap{width:calc(100% - 32px)}
@@ -622,9 +626,9 @@ html:not(.js) .cut .wline{stroke-dashoffset:0}
   .vbar .vt svg{display:none}
   .vbar .vb{grid-auto-flow:column;align-items:center}
   .bt-main .flag{display:none}
-  .inkbar{grid-template-columns:1fr;margin-top:50px}
-  .inkbar .slashes{height:70px;min-height:0;width:200px}
-  .ib{margin-left:0;clip-path:polygon(40px 0,100% 0,100% 100%,0 100%);padding:20px 20px 20px 34px;gap:18px 30px}
+  .inkbar{margin-top:50px}
+  .ib{grid-template-columns:auto auto;clip-path:polygon(22px 0,100% 0,100% 100%,0 100%);padding:20px 20px 20px 36px;gap:18px 30px}
+  .ib-stripes{display:none}
   .tiles{grid-template-columns:repeat(2,1fr);margin-top:50px}
   .tile{min-height:140px;gap:30px}
   .terms{grid-template-columns:1fr}
@@ -838,12 +842,8 @@ html:not(.js) .cut .wline{stroke-dashoffset:0}
 
   <div class="wrap">
     <div class="inkbar sr">
-      <svg class="slashes" viewBox="0 0 290 120" preserveAspectRatio="xMinYMid meet" aria-hidden="true" fill="#2a2429">
-        <polygon points="0,38 8,38 8,46"/>
-        <polygon points="96,0 102,0 88,40 150,40 70,96 62,120 58,120 66,96 4,96 84,40"/>
-        <polygon points="240,0 246,0 232,40 290,40 212,96 204,120 200,120 208,96 146,96 226,40"/>
-      </svg>
       <div class="ib">
+        <span class="ib-stripes" aria-hidden="true"><i style="--n:0"></i><i style="--n:1"></i><i style="--n:2"></i></span>
         <div class="ib-c"><small>TYPE</small><b>L2D<em>.</em></b><small>RIGGER ✦</small></div>
         <div class="ib-c"><small>QUOTE</small><b>FORM</b><small>依需求報價</small></div>
         <div class="ib-t">
