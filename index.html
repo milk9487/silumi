@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>希露米 Live2D 委託</title>
+<meta name="description" content="希露米 Silumi｜Live2D 建模委託：委託說明、目前排單、委託表單與作品集。">
+<meta property="og:title" content="希露米 Live2D 委託">
+<meta property="og:description" content="希露米 Silumi｜Live2D 建模委託：委託說明、目前排單、委託表單與作品集。">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23ee5e98'/%3E%3Cg transform='translate(32 32)' fill='%23fff'%3E%3Cellipse cx='0' cy='-15' rx='5.2' ry='11' transform='rotate(0)'/%3E%3Cellipse cx='0' cy='-15' rx='5.2' ry='11' transform='rotate(36)'/%3E%3Cellipse cx='0' cy='-15' rx='5.2' ry='11' transform='rotate(72)'/%3E%3Cellipse cx='0' cy='-15' rx='5.2' ry='11' transform='rotate(108)'/%3E%3Cellipse cx='0' cy='-15' rx='5.2' ry='11' transform='rotate(144)'/%3E%3Cellipse cx='0' cy='-15' rx='5.2' ry='11' transform='rotate(180)'/%3E%3Cellipse cx='0' cy='-15' rx='5.2' ry='11' transform='rotate(216)'/%3E%3Cellipse cx='0' cy='-15' rx='5.2' ry='11' transform='rotate(252)'/%3E%3Cellipse cx='0' cy='-15' rx='5.2' ry='11' transform='rotate(288)'/%3E%3Cellipse cx='0' cy='-15' rx='5.2' ry='11' transform='rotate(324)'/%3E%3Ccircle r='6.5' fill='%23ffc5db'/%3E%3C/g%3E%3C/svg%3E">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a pink-and-white "Silumi Database" — Swiss poster grid + UI chrome (path bar, upload bars, chat bubbles, barcodes), with daisies and magic circles drawn as technical linework. */
+:root{
+  --paper:#f6f3f4;
+  --white:#ffffff;
+  --ink:#2a2429;
+  --ink-2:#71676d;
+  --line:#d9d0d5;
+  --pink:#ee5e98;
+  --pink-2:#ffc5db;
+  --pink-3:#ffeef4;
+  --q-done:#a8325f;
+  --q-wip:#ee5e98;
+  --q-wait:#f9b8d1;
+  --f-body:"Archivo","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-tc:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --ease:cubic-bezier(.2,.75,.15,1);
+  --snap:cubic-bezier(.77,0,.18,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-color:var(--paper);
+  background-image:radial-gradient(rgba(42,36,41,.07) .7px,transparent .85px);background-size:3px 3px}
+a{color:inherit}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{text-wrap:balance}
+button{font:inherit;color:inherit}
+.mono{font-family:var(--f-mono);letter-spacing:0}
+.wrap{width:min(1200px,100% - 48px);margin-inline:auto}
+:focus-visible{outline:2px solid var(--pink);outline-offset:3px}
+[hidden]{display:none !important}
+
+/* ---------- loader ---------- */
+#loader{position:fixed;inset:0;z-index:100;background:var(--white);clip-path:inset(0 0 0 0);transition:clip-path 1s var(--snap)}
+html:not(.js) #loader{display:none}
+#loader.done{clip-path:inset(0 0 100% 0)}
+html.js #loader{animation:hideLoader 0s 8s forwards}
+@keyframes hideLoader{to{visibility:hidden}}
+.ld-in{position:relative;height:100%;display:grid;grid-template-rows:auto 1fr auto;padding:36px 0 40px}
+.ld-top{display:flex;align-items:center;gap:16px;font-size:12px;color:var(--ink-2)}
+.ld-log{list-style:none;margin:40px 0 0;padding:0;font-size:13px;line-height:2;color:var(--ink-2);align-self:start;max-width:440px}
+.ld-log li{display:flex;gap:8px;opacity:0;transform:translateX(-10px);animation:logIn .35s var(--ease) forwards}
+.ld-log li b{font-weight:500;color:var(--ink)}
+.ld-log li span{flex:1;overflow:hidden;white-space:nowrap;color:var(--line)}
+.ld-log li em{font-style:normal;color:var(--pink)}
+@keyframes logIn{to{opacity:1;transform:none}}
+.ld-circle{position:absolute;right:0;top:50%;width:min(52vmin,440px);transform:translateY(-55%);overflow:visible}
+.ld-circle .dr{fill:none;stroke:var(--ink);stroke-width:.8;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.6s var(--ease) forwards}
+.ld-circle .dr.p{stroke:var(--pink);stroke-width:1.2}
+.ld-circle .d2{animation-delay:.25s}.ld-circle .d3{animation-delay:.5s}.ld-circle .d4{animation-delay:.8s}
+.ld-circle .spin{animation:spin 14s linear infinite}
+.ld-bottom{display:grid;gap:12px}
+.ld-pct{font-weight:900;font-stretch:112%;font-size:clamp(84px,17vw,220px);line-height:.8;letter-spacing:-.06em;font-variant-numeric:tabular-nums}
+.ld-pct i{font-style:normal;color:var(--pink);font-size:.4em;letter-spacing:0;margin-left:.05em}
+.ld-bar{height:6px;background:#e9e3e6;border-radius:6px;overflow:hidden}
+.ld-bar i{display:block;height:100%;width:0;background:var(--ink);border-radius:6px}
+.ld-bottom .mono{font-size:12px;color:var(--ink-2);display:flex;justify-content:space-between}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spinR{to{transform:rotate(-360deg)}}
+
+/* ---------- page warp transition ---------- */
+#warp{position:fixed;inset:0;z-index:90;pointer-events:none;overflow:hidden}
+#warp.in,#warp.out{pointer-events:auto}
+#warp .w-ink,#warp .w-pink{position:absolute;top:0;bottom:0;left:-15%;right:-15%;transform:translateX(120%) skewX(-14deg)}
+#warp .w-ink{background:var(--ink)}
+#warp .w-pink{background:var(--pink);background-image:radial-gradient(rgba(255,255,255,.22) 1px,transparent 1.2px);background-size:6px 6px}
+#warp.in .w-ink{transform:translateX(0) skewX(-14deg);transition:transform .46s var(--snap)}
+#warp.in .w-pink{transform:translateX(3%) skewX(-14deg);transition:transform .46s var(--snap) .07s}
+#warp.out .w-pink{transform:translateX(-125%) skewX(-14deg);transition:transform .52s var(--snap)}
+#warp.out .w-ink{transform:translateX(-125%) skewX(-14deg);transition:transform .52s var(--snap) .07s}
+.w-txt{position:absolute;left:0;right:0;bottom:8vh;opacity:0;transform:translateX(40px);color:#fff}
+#warp.in .w-txt{opacity:1;transform:none;transition:opacity .3s .28s,transform .5s var(--ease) .28s}
+#warp.out .w-txt{opacity:0;transform:translateX(-60px);transition:opacity .2s,transform .3s}
+.w-txt .wrap{display:grid;gap:6px}
+.w-txt .mono{font-size:13px;opacity:.9}
+.w-txt b{font-weight:900;font-stretch:118%;font-size:clamp(64px,15vw,200px);line-height:.85;letter-spacing:-.06em}
+.w-txt span{font-weight:800;font-size:clamp(22px,3.2vw,40px);letter-spacing:-.02em}
+.w-bar{height:4px;background:rgba(255,255,255,.35);max-width:360px;overflow:hidden;margin-top:8px}
+.w-bar i{display:block;height:100%;width:0;background:#fff}
+#warp.in .w-bar i{width:100%;transition:width .55s var(--ease) .25s}
+
+/* ---------- petals ---------- */
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:35}
+body.still #fx{display:none}
+
+/* ---------- header ---------- */
+.hdr{position:sticky;top:0;z-index:40;background:rgba(246,243,244,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.hdr .wrap{display:flex;align-items:center;gap:22px;height:84px}
+.logo{width:54px;height:54px;flex:none;display:grid;place-items:center;background:var(--pink);text-decoration:none}
+.logo svg{width:32px;height:32px;transition:transform 1s var(--ease)}
+.logo:hover svg{transform:rotate(180deg)}
+.logo.sm{width:34px;height:34px}.logo.sm svg{width:20px;height:20px}
+.menu{display:flex;gap:2px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent)}
+.menu::-webkit-scrollbar{display:none}
+.menu a{position:relative;flex:none;text-decoration:none;font-size:15px;font-weight:500;letter-spacing:.02em;padding:10px 14px;white-space:nowrap}
+.menu a::after{content:"";position:absolute;left:14px;right:14px;bottom:4px;height:2px;background:var(--pink);transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease)}
+.menu a:hover::after{transform:scaleX(1);transform-origin:left}
+.menu a[aria-current="page"]{font-weight:800;font-style:italic}
+.menu a[aria-current="page"]::after{transform:scaleX(1)}
+.toggle{flex:none;position:relative;display:grid;grid-template-columns:1fr 1fr;width:118px;height:48px;padding:0;border:2px solid var(--ink);border-radius:12px;background:var(--ink);cursor:pointer;overflow:hidden}
+.toggle .knob{position:absolute;top:2px;bottom:2px;left:2px;width:calc(50% - 2px);background:#efeaec;border-radius:8px;transform:translateX(100%);transition:transform .5s var(--ease)}
+.toggle[aria-pressed="false"] .knob{transform:translateX(0)}
+.toggle span{position:relative;display:grid;place-items:center;color:#8d8288;transition:color .4s}
+.toggle svg{width:22px;height:22px}
+.toggle[aria-pressed="true"] .on,.toggle[aria-pressed="false"] .off{color:var(--pink)}
+
+/* path bar */
+.pathrow{display:flex;align-items:center;gap:12px;margin-top:6px}
+.path{flex:1;min-width:0;display:flex;align-items:center;gap:10px;height:34px;padding:0 12px;border:1.5px solid #5b5358;background:rgba(255,255,255,.55);font-size:12.5px;white-space:nowrap;overflow:hidden}
+.path svg{flex:none;width:18px;height:18px}
+.path .crumbs{overflow:hidden;text-overflow:ellipsis}
+.path b{font-weight:500;color:var(--pink)}
+.caret{font-style:normal;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.clock{flex:none;display:flex;align-items:center;gap:8px;height:34px;padding:0 12px;border:1.5px solid #5b5358;background:rgba(255,255,255,.55);font-size:12.5px;font-variant-numeric:tabular-nums}
+.clock svg{width:15px;height:15px}
+.xbtn{flex:none;width:36px;height:36px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;text-decoration:none;transition:transform .5s var(--ease),background .3s}
+.xbtn svg{width:16px;height:16px}
+.xbtn:hover{transform:rotate(90deg);background:var(--pink-2)}
+
+/* ---------- shared bits ---------- */
+.rise{opacity:1}
+html.js body:not(.ready) .page .rise{opacity:0;animation:fallbackShow 0s 8s forwards}
+.ready .page.active .rise{animation:rise .85s var(--ease) both;animation-delay:calc(var(--base,.1s) + var(--d,0) * 85ms)}
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes fallbackShow{to{opacity:1}}
+.js .sr{transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:calc(var(--d,0) * 90ms)}
+.js .sr:not(.in){opacity:0;transform:translateY(40px)}
+
+.btn{display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 22px;border:2px solid var(--ink);background:var(--white);color:var(--ink);font-weight:700;font-size:15px;letter-spacing:.01em;text-decoration:none;cursor:pointer;position:relative;overflow:hidden;isolation:isolate;transition:color .35s,border-color .35s}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--ink);transform:translateY(101%);transition:transform .45s var(--ease)}
+.btn:hover{color:var(--white)}
+.btn:hover::before{transform:none}
+.btn .arr{width:16px;height:16px;transition:transform .4s var(--ease)}
+.btn:hover .arr{transform:translate(3px,-3px)}
+.btn.pink{background:var(--pink);border-color:var(--pink);color:#fff}
+.btn.pink:hover{border-color:var(--ink)}
+.btn.sm{height:40px;padding:0 16px;font-size:14px}
+.tag{display:inline-block;background:var(--pink);color:#fff;font:500 12px/1 var(--f-mono);padding:5px 8px}
+.box{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 4px;background:var(--ink);color:#fff;font:500 11px/1 var(--f-mono)}
+.dashes{width:12px;height:60px;background:repeating-linear-gradient(to bottom,var(--ink) 0 1.5px,transparent 1.5px 9px);opacity:.55}
+.barcode{height:30px;width:110px;display:block}
+.marks{display:flex;gap:6px}
+.marks i{font:700 11px/1 var(--f-body);font-style:normal;border:1.5px solid var(--ink);padding:4px 5px;letter-spacing:.04em}
+.dots3{display:inline-flex;gap:5px}
+.dots3 i{width:6px;height:6px;border-radius:50%;background:var(--ink)}
+
+/* page head */
+.phead{display:grid;grid-template-columns:1fr auto;gap:18px 24px;padding:44px 0 26px}
+.date{display:flex;align-items:center;gap:10px}
+.date b{font-weight:800;font-size:44px;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.date span{display:grid;font-weight:700;font-size:15px;line-height:1.15}
+.date i{font-style:normal}
+.hashtag{display:inline-block;margin-top:26px;font-weight:800;font-size:22px;letter-spacing:-.01em;position:relative;padding-bottom:6px}
+.hashtag::after{content:"";position:absolute;left:30%;right:0;bottom:0;height:1.5px;background:var(--ink);opacity:.5}
+.instr{display:grid;justify-items:end;gap:10px;text-align:right}
+.instr b{font-weight:700;font-size:15px;line-height:1.15}
+.instr .mono{font-size:12px;color:var(--ink-2)}
+.ptitle{grid-column:1/-1;display:flex;align-items:flex-end;flex-wrap:wrap;gap:4px 18px;padding-top:30px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.ptitle .box{align-self:flex-start;margin-top:.9em}
+.ptitle h1{font-weight:900;font-stretch:115%;font-size:clamp(54px,12.5vw,160px);line-height:.82;letter-spacing:-.06em}
+.ptitle .tc{font-family:var(--f-tc);font-weight:900;font-size:clamp(20px,2.4vw,30px);color:var(--pink);padding-bottom:.35em}
+.ptitle .meta{margin-left:auto;font-size:12px;color:var(--ink-2);padding-bottom:.6em;text-align:right;line-height:1.5}
+
+.ptitle h1.long{font-size:min(160px,13.2vw)}
+.plabel{display:none;flex:1;min-width:0;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plabel b{font-weight:500;color:var(--pink)}
+.mbtn{display:none;flex:none;width:44px;height:44px;border:2px solid var(--ink);background:var(--white);cursor:pointer;place-items:center;align-content:center;gap:5px;padding:0}
+.mbtn span{display:block;width:18px;height:2px;background:var(--ink);transition:transform .4s var(--ease)}
+.mbtn span:last-child{width:12px;justify-self:end;margin-right:11px}
+#msheet{position:fixed;inset:0;z-index:80;background:var(--paper);background-image:radial-gradient(rgba(42,36,41,.07) .7px,transparent .85px);background-size:3px 3px;
+  display:grid;grid-template-rows:auto 1fr auto;padding:22px 0 28px;clip-path:circle(0% at calc(100% - 40px) 36px);visibility:hidden;
+  transition:clip-path .7s var(--snap),visibility 0s .7s}
+#msheet.open{clip-path:circle(150% at calc(100% - 40px) 36px);visibility:visible;transition:clip-path .7s var(--snap),visibility 0s}
+.ms-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--ink-2)}
+.ms-list{list-style:none;margin:20px auto 0;padding:0;display:grid;align-content:start;border-top:2px solid var(--ink);overflow:auto}
+.ms-list li{border-bottom:1.5px solid var(--line);opacity:0;transform:translateX(-24px);transition:opacity .4s,transform .5s var(--ease)}
+#msheet.open .ms-list li{opacity:1;transform:none;transition-delay:calc(.18s + var(--i) * 55ms)}
+.ms-list a{display:grid;grid-template-columns:44px 1fr auto;align-items:baseline;gap:8px;padding:11px 4px;text-decoration:none}
+.ms-list a .mono{font-size:12px;color:var(--ink-2)}
+.ms-list a b{font-weight:900;font-stretch:112%;font-size:28px;letter-spacing:-.05em;line-height:1}
+.ms-list a small{font-family:var(--f-tc);font-weight:700;color:var(--pink);font-size:14px}
+.ms-list a[aria-current="page"] b{font-style:italic;color:var(--pink)}
+.ms-foot{display:flex;justify-content:space-between;align-items:center;gap:12px}
+
+/* big type block (poster) */
+.bigtype{position:relative;display:grid;grid-template-columns:1fr auto auto;align-items:end;gap:24px;padding:64px 0 20px}
+.bt-main{position:relative;padding:28px 0 22px 22px}
+.bt-main .hl{position:absolute;left:0;top:0;bottom:0;width:clamp(90px,15vw,200px);background:var(--pink);transform-origin:bottom;animation:hlUp 1s var(--snap) both;animation-delay:calc(var(--base,.1s) + .2s)}
+@keyframes hlUp{from{transform:scaleY(0)}to{transform:none}}
+.bt-main p{position:relative;font-weight:800;line-height:.86;letter-spacing:-.058em;
+  background:radial-gradient(rgba(255,255,255,.2) .8px,transparent 1px) 0 0/4px 4px,var(--ink);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bt-main .l1{font-size:clamp(64px,12vw,168px)}
+.bt-main .l2{font-size:clamp(46px,8.4vw,118px);margin-top:.06em}
+.bt-main .flag{position:absolute;top:24px;right:-34px;width:22px;height:26px;background:var(--ink);clip-path:polygon(0 0,100% 0,100% 100%,50% 72%,0 100%)}
+.bt-side{display:grid;justify-items:end;text-align:right;padding-bottom:24px}
+.bt-meta{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.bt-meta b{font-weight:800;font-size:20px}
+.bt-meta span{display:grid;font-size:10.5px;line-height:1.3;text-align:center}
+.bt-meta u{text-decoration:none;border-bottom:1.5px solid var(--ink);padding-bottom:2px}
+.bt-side .s1{font-weight:500;font-size:clamp(24px,3vw,36px);letter-spacing:-.03em;line-height:1}
+.bt-side .s2{font-weight:800;font-size:clamp(40px,5.6vw,76px);letter-spacing:-.065em;line-height:.95}
+.vbar{align-self:stretch;width:86px;display:grid;grid-template-rows:1fr auto;text-decoration:none;min-height:300px}
+.vbar .vt{background:var(--pink);display:flex;align-items:flex-end;justify-content:center;padding:12px 6px;position:relative;overflow:hidden}
+.vbar .vt svg{position:absolute;top:10px;left:50%;width:120px;transform:translateX(-50%);transition:transform 1.2s var(--ease)}
+.vbar:hover .vt svg{transform:translateX(-50%) rotate(60deg)}
+.vbar .vt small{position:relative;font-size:10.5px;font-weight:700;color:var(--ink)}
+.vbar .vb{background:var(--ink);color:#fff;padding:12px 8px;display:grid;gap:8px;justify-items:center;text-align:center}
+.vbar .vb small{font-size:10.5px;font-weight:700;line-height:1.25;color:var(--pink-2)}
+.vbar .vb b{font-weight:800;font-size:26px;line-height:1;letter-spacing:-.04em;color:var(--pink)}
+.vbar .vb b svg{width:14px;height:14px;vertical-align:baseline}
+.bt-foot{display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding-top:4px}
+.dark-chip{display:flex;align-items:center;gap:12px;background:var(--ink);color:#fff;padding:10px 14px;min-width:210px}
+.dark-chip b{font-weight:800;font-size:22px;color:var(--pink);line-height:1}
+.dark-chip small{display:block;font-size:10px;color:#bdb3b8;line-height:1.2}
+.ink-tag{display:flex;font:500 11px/1 var(--f-mono)}
+.ink-tag span{padding:9px 12px;background:var(--pink);color:#fff;font-weight:700}
+.ink-tag em{font-style:normal;padding:9px 14px;background:var(--ink);color:#fff}
+
+/* ---------- HOME ---------- */
+.status{margin-top:34px;border:1.5px solid #6a6166;border-radius:6px;background:rgba(255,255,255,.6);padding:20px 26px 18px 56px}
+.st-top{display:flex;justify-content:space-between;align-items:baseline;gap:14px;font-size:17px;font-weight:400}
+.st-top em{font-style:normal;color:var(--ink-2);font-size:12.5px}
+.st-top b{font-weight:500;font-size:14px;font-variant-numeric:tabular-nums}
+.st-bar{margin:12px 0 12px;height:10px;border-radius:10px;background:#e2dbdf;overflow:hidden;position:relative}
+.st-bar i{position:absolute;top:0;bottom:0;width:38%;border-radius:10px;background:var(--ink);animation:indet 2.4s var(--snap) infinite}
+@keyframes indet{0%{left:-40%}100%{left:105%}}
+.st-bot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+.st-bot .mono{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)}
+.st-bot .mono svg{width:16px;height:16px}
+
+.cut{display:block;width:100%;height:auto;margin-top:42px;overflow:visible}
+.cut .wt{font-family:"Archivo","Arial Black",Impact,sans-serif;font-weight:900;font-size:560px;font-stretch:112%;letter-spacing:-.02em}
+.cut .wline{fill:none;stroke:var(--ink);stroke-width:3.5;stroke-linejoin:round;stroke-dasharray:3200;stroke-dashoffset:3200}
+.ready .page.active .cut .wline{animation:draw 2.4s var(--ease) forwards;animation-delay:.15s}
+html:not(.js) .cut .wline{stroke-dashoffset:0}
+.cut .h-art{transform-box:view-box;transform-origin:600px 260px}
+.ready .page.active .cut .h-art{animation:artIn 1.4s var(--ease) both;animation-delay:.25s}
+@keyframes artIn{from{transform:translateY(90px) scale(1.08);opacity:0}to{transform:none;opacity:1}}
+.cut .h-daisy{transform-box:view-box;transform-origin:600px 262px;animation:spin 70s linear infinite}
+.cut .h-ring{transform-box:view-box;transform-origin:600px 262px;animation:spinR 110s linear infinite}
+.cut .tw{transform-box:fill-box;transform-origin:center;animation:tw 2.6s ease-in-out infinite}
+@keyframes tw{0%,100%{transform:scale(.4);opacity:.3}50%{transform:scale(1);opacity:1}}
+
+.info{display:grid;grid-template-columns:1.35fr 1fr 1fr 1.25fr;gap:34px 40px;padding:44px 0 10px}
+.i-name h2{font-weight:800;font-size:clamp(34px,3.6vw,46px);letter-spacing:-.03em;line-height:1.05;font-family:var(--f-tc)}
+.i-name h2 i{font-family:var(--f-body);font-style:italic;font-weight:800}
+.i-role{display:flex;align-items:center;gap:14px;margin-top:14px}
+.i-role b{font-weight:800;font-size:clamp(26px,2.7vw,34px);letter-spacing:-.035em;line-height:1}
+.i-num{display:flex;align-items:flex-start;gap:14px;margin-top:38px}
+.i-num b{font-weight:600;font-size:46px;line-height:.9;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.i-num b sup{font-size:.35em;color:var(--pink)}
+.i-num small{font-size:11px;line-height:1.35;letter-spacing:.04em;text-transform:uppercase;padding-top:6px}
+.i-name .mono.sub{font-size:11px;color:var(--ink-2);margin-top:10px}
+.i-intro{display:flex;gap:18px;align-items:center;margin-top:30px}
+.i-intro p{font-family:var(--f-tc);font-weight:500;font-size:16px;line-height:1.6}
+.emblem{flex:none;width:58px;height:58px}
+.i-col{display:grid;align-content:start;gap:26px;font-size:13px}
+.i-col .k{font-weight:800;font-size:16px;letter-spacing:-.01em;line-height:1.2;display:block}
+.i-col .v{color:var(--ink-2);font-family:var(--f-tc);line-height:1.45;display:block}
+.i-col.r{text-align:right}
+.i-col .rule{height:3px;background:var(--ink);width:100%}
+.i-col .big{font-weight:800;font-size:clamp(30px,3vw,40px);letter-spacing:-.05em;line-height:1}
+.i-col .wip{font-weight:800;font-size:19px;letter-spacing:-.04em}
+.i-col a{text-decoration:none;border-bottom:1.5px solid var(--pink)}
+.diam{width:56px;height:56px}
+.chat{display:grid;align-content:start;gap:10px;min-height:260px}
+.msg{display:flex;align-items:center;gap:10px;justify-content:flex-end;transform-origin:right center;animation:pop .45s var(--ease) both}
+.msg.l{justify-content:flex-start;transform-origin:left center}
+.bub{position:relative;background:var(--pink);color:#fff;font-weight:700;font-size:13.5px;line-height:1.35;padding:8px 15px;border-radius:999px;font-family:var(--f-tc);max-width:250px}
+.bub::after{content:"";position:absolute;right:-5px;top:50%;width:10px;height:10px;background:inherit;transform:translateY(-50%) rotate(45deg);border-radius:2px}
+.msg.l .bub{background:var(--ink)}
+.msg.l .bub::after{right:auto;left:-5px}
+.av{flex:none;width:36px;height:36px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;background:var(--white);font:600 10px/1 var(--f-mono);overflow:hidden}
+.av svg{width:24px;height:24px}
+.av.me{background:var(--pink-3)}
+.typing{display:inline-flex;gap:4px;padding:3px 2px}
+.typing i{width:6px;height:6px;border-radius:50%;background:currentColor;animation:bounce 1s ease-in-out infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.sysmsg{text-align:center;font-size:12.5px;font-weight:700;color:#b9adb3;padding-top:6px;animation:pop .45s var(--ease) both}
+
+.tick{margin-top:56px;background:var(--ink);color:#f3edf0;overflow:hidden;padding:12px 0}
+.tick .track{display:flex;width:max-content;animation:marq 34s linear infinite}
+.tick span{display:flex;align-items:center;gap:22px;padding-right:22px;font-weight:700;font-style:italic;font-size:15px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.tick span i{font-style:normal;color:var(--pink)}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+.inkbar{display:grid;grid-template-columns:290px 1fr;align-items:stretch;margin:70px 0 0}
+.inkbar .slashes{width:100%;height:100%;min-height:110px}
+.ib{background:var(--ink);color:#fff;display:grid;grid-template-columns:auto auto 1fr;gap:28px 46px;padding:22px 34px 22px 120px;clip-path:polygon(84px 0,100% 0,100% 100%,0 100%);margin-left:-120px;border-radius:0 0 0 0}
+.ib-c{display:grid;align-content:center;gap:2px}
+.ib-c small{font-size:11.5px;font-weight:600;letter-spacing:.06em}
+.ib-c b{font-weight:600;font-size:40px;line-height:1;letter-spacing:-.03em}
+.ib-c b em{font-style:normal;color:var(--pink)}
+.ib-t{display:grid;align-content:center;gap:8px}
+.ib-t b{font-weight:800;font-stretch:112%;font-size:20px;letter-spacing:.01em}
+.ib-t p{font-family:var(--f-tc);font-size:13px;color:#d6ccd1;line-height:1.5;max-width:40em}
+.ib-f{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.ib-f small{font-size:11px;font-weight:600;letter-spacing:.05em;color:#bdb3b8}
+
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink);border-left:1.5px solid var(--line);margin-top:70px}
+.tile{position:relative;display:grid;align-content:space-between;gap:46px;min-height:180px;padding:16px 16px 18px;text-decoration:none;border-right:1.5px solid var(--line);border-bottom:1.5px solid var(--line);overflow:hidden;isolation:isolate;transition:color .35s}
+.tile::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--ink);transform:scaleY(0);transform-origin:bottom;transition:transform .5s var(--snap)}
+.tile:hover{color:#fff}
+.tile:hover::before{transform:none}
+.tile .t-n{font:500 12px/1 var(--f-mono);color:var(--ink-2);transition:color .35s}
+.tile:hover .t-n{color:var(--pink)}
+.tile b{display:block;font-weight:800;font-size:22px;letter-spacing:-.03em;line-height:1}
+.tile small{display:block;font-family:var(--f-tc);font-size:13px;margin-top:6px;color:var(--ink-2);transition:color .35s}
+.tile:hover small{color:#d6ccd1}
+.tile .ta{position:absolute;right:14px;top:14px;width:18px;height:18px;transition:transform .5s var(--ease)}
+.tile:hover .ta{transform:rotate(45deg)}
+.tile.pink{background:var(--pink);color:#fff}
+.tile.pink .t-n,.tile.pink small{color:#fff}
+
+/* ---------- ABOUT ---------- */
+.about-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;padding:50px 0 0;align-items:start}
+.win{background:var(--white);border:2px solid var(--ink)}
+.win-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:2px solid var(--ink);font-size:12px}
+.win-body{margin:0;padding:6px 0}
+.win-body div{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:11px 16px;border-bottom:1px dashed var(--line);position:relative}
+.win-body div:last-child{border-bottom:0}
+.win-body div::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--pink);transform:scaleY(0);transition:transform .35s var(--ease)}
+.win-body div:hover::before{transform:none}
+.win-body dt{font:500 11.5px/1.9 var(--f-mono);color:var(--ink-2)}
+.win-body dd{margin:0;font-weight:700;font-size:16px;font-family:var(--f-body)}
+.win-body dd .pk{color:var(--pink)}
+.win-foot{display:flex;justify-content:space-between;align-items:flex-end;padding:12px 14px;border-top:2px solid var(--ink);background:var(--pink-3);font-size:11px}
+.statement{font-family:var(--f-tc);font-weight:900;font-size:clamp(28px,3.6vw,46px);line-height:1.3;letter-spacing:.01em}
+.statement mark{background:linear-gradient(transparent 58%,var(--pink-2) 58%);color:inherit;padding:0 .08em}
+.st-p{margin-top:22px;font-family:var(--f-tc);color:var(--ink-2);font-size:16.5px;max-width:34em;line-height:1.8}
+.terms{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:70px;border-top:2px solid var(--ink)}
+.term{padding:20px 18px 24px;border-right:1.5px solid var(--line);position:relative;overflow:hidden;isolation:isolate}
+.term:last-child{border-right:0}
+.term::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pink-3);transform:translateY(100%);transition:transform .5s var(--snap)}
+.term:hover::before{transform:none}
+.term .mono{font-size:11px;color:var(--ink-2)}
+.term svg{display:block;width:74px;height:74px;margin:16px 0 18px;transition:transform .8s var(--ease)}
+.term:hover svg{transform:rotate(-8deg) scale(1.08)}
+.term h3{font-weight:800;font-size:21px;letter-spacing:-.02em;line-height:1.1}
+.term h3 span{display:block;font-family:var(--f-tc);font-weight:700;font-size:15px;color:var(--pink);margin-top:4px;letter-spacing:0}
+.term p{font-family:var(--f-tc);font-size:14px;color:var(--ink-2);margin-top:10px;line-height:1.65}
+
+/* ---------- COMMISSION ---------- */
+.pipe{margin-top:30px;border:1.5px solid #6a6166;border-radius:6px;background:rgba(255,255,255,.6);padding:22px 26px 26px}
+.pipe-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;font-size:17px}
+.pipe-head em{font-style:normal;font-size:12.5px;color:var(--ink-2);margin-left:6px}
+.pipe-head b{font-weight:500;font-size:14px;font-variant-numeric:tabular-nums}
+.pipe-bar{position:relative;height:10px;border-radius:10px;background:#e2dbdf;margin:14px 0 26px}
+.pipe-bar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:10px;background:var(--ink)}
+.pipe-bar .pip{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;background:var(--white);border:2px solid var(--ink);transform:translate(-50%,-50%);transition:background .3s,border-color .3s,transform .4s var(--ease)}
+.pipe-bar .pip.lit{background:var(--pink);border-color:var(--pink);transform:translate(-50%,-50%) scale(1.25)}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.step{padding:18px 18px 20px;border:1.5px solid var(--line);background:var(--white);transition:border-color .4s,transform .5s var(--ease),box-shadow .4s}
+.step.lit{border-color:var(--ink)}
+.step:hover{transform:translateY(-4px);box-shadow:6px 6px 0 var(--pink-2)}
+.step .mono{font-size:11px;color:var(--ink-2);display:flex;justify-content:space-between}
+.step.lit .mono b{color:var(--pink)}
+.step .mono b{font-weight:500}
+.step h3{font-family:var(--f-tc);font-weight:900;font-size:21px;margin:16px 0 8px}
+.step p{font-family:var(--f-tc);font-size:14.5px;color:var(--ink-2);line-height:1.7}
+.notice{margin-top:60px;display:grid;grid-template-columns:200px 1fr;gap:24px;border-top:2px solid var(--ink);padding-top:24px}
+.notice h2{font-weight:800;font-size:28px;letter-spacing:-.03em;line-height:1}
+.notice h2 span{display:block;font-family:var(--f-tc);font-size:15px;color:var(--pink);margin-top:8px;letter-spacing:0}
+.nrows{display:grid}
+.nrow{display:grid;grid-template-columns:52px 120px 1fr;gap:12px;align-items:baseline;padding:16px 0;border-bottom:1.5px dashed var(--line)}
+.nrow .mono{font-size:12px;color:var(--ink-2)}
+.nrow b{font-family:var(--f-tc);font-weight:900;font-size:17px}
+.nrow p{font-family:var(--f-tc);font-size:15.5px}
+
+/* ---------- WORKS ---------- */
+.works{display:grid;grid-template-columns:1fr;gap:22px;padding-top:40px}
+.player{display:grid;grid-template-rows:auto auto auto;align-content:start;text-decoration:none;border:2px solid var(--ink);background:var(--white);transition:box-shadow .5s var(--ease),transform .5s var(--ease)}
+.player:hover{transform:translate(-4px,-4px);box-shadow:8px 8px 0 var(--pink)}
+.pl-top,.pl-bot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;font-size:12px}
+.pl-top{border-bottom:2px solid var(--ink)}
+.pl-bot{border-top:2px solid var(--ink)}
+.pl-screen{position:relative;overflow:hidden;background:var(--pink-3);aspect-ratio:16/9}
+.pl-fallback{position:absolute;inset:0;display:block}
+.yt{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;opacity:0;transition:opacity .6s}
+.yt.on{opacity:1}
+.player.live:hover{transform:none;box-shadow:none}
+.player.live .scrub,.player.live #tc{display:none}
+.pl-bot a{text-decoration:none;border-bottom:1.5px solid var(--pink)}
+.pl-bot a:hover{color:var(--pink)}
+.pl-screen svg.bg{position:absolute;inset:0;width:100%;height:100%}
+.pl-screen .ring{transform-box:view-box;transform-origin:400px 200px;animation:spin 40s linear infinite}
+.play{position:absolute;left:50%;top:50%;width:92px;height:92px;border-radius:50%;background:var(--ink);transform:translate(-50%,-50%);display:grid;place-items:center;transition:transform .5s var(--ease),background .4s}
+.play::after{content:"";margin-left:7px;border-left:24px solid #fff;border-top:15px solid transparent;border-bottom:15px solid transparent}
+.player:hover .play{transform:translate(-50%,-50%) scale(1.1);background:var(--pink)}
+.scrub{flex:1;height:4px;background:#e2dbdf;position:relative;overflow:hidden}
+.scrub i{position:absolute;left:0;top:0;bottom:0;background:var(--pink);animation:scrub 14s linear infinite}
+@keyframes scrub{from{width:0}to{width:100%}}
+.pl-bot .mono{font-variant-numeric:tabular-nums}
+.w-side{display:grid;gap:22px;grid-template-rows:1fr 1fr}
+.wcard{position:relative;display:grid;align-content:space-between;gap:20px;padding:20px 20px 22px;border:2px solid var(--ink);background:var(--white);text-decoration:none;overflow:hidden;isolation:isolate;transition:color .35s}
+.wcard::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--ink);clip-path:circle(0% at 100% 0);transition:clip-path .7s var(--snap)}
+.wcard:hover{color:#fff}
+.wcard:hover::before{clip-path:circle(150% at 100% 0)}
+.wcard .mono{font-size:11.5px;color:var(--ink-2);display:flex;justify-content:space-between;transition:color .35s}
+.wcard:hover .mono{color:var(--pink-2)}
+.wcard h3{font-weight:800;font-size:clamp(26px,2.6vw,34px);letter-spacing:-.045em;line-height:1}
+.wcard p{font-family:var(--f-tc);font-size:14.5px;color:var(--ink-2);margin-top:8px;transition:color .35s}
+.wcard:hover p{color:#d6ccd1}
+.wcard .deco{position:absolute;right:-30px;bottom:-30px;width:140px;height:140px;z-index:-1;opacity:.95;animation:spin 30s linear infinite}
+.w-title{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:10px;margin-top:20px}
+.w-title h2{font-weight:800;font-size:clamp(28px,3vw,38px);letter-spacing:-.04em}
+.w-title p{font-family:var(--f-tc);color:var(--ink-2)}
+
+/* ---------- Q&A ---------- */
+.qa{display:grid;grid-template-columns:.85fr 1.15fr;gap:46px;padding-top:50px;align-items:start}
+.qa-l .big{font-weight:800;font-size:clamp(50px,7vw,96px);line-height:.88;letter-spacing:-.06em}
+.qa-l .big em{font-style:normal;color:var(--pink)}
+.qa-l p{font-family:var(--f-tc);color:var(--ink-2);margin-top:22px;max-width:22em}
+.qa-l .btn{margin-top:26px}
+.qlist{display:grid;gap:16px}
+.qa-item{display:grid;gap:10px}
+.qbtn{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;cursor:pointer;text-align:left;justify-self:start}
+.qbtn .bub{background:var(--ink);transition:background .3s}
+.qbtn .bub::after{right:auto;left:-5px}
+.qbtn:hover .bub{background:#4a4048}
+.qbtn[aria-expanded="true"] .bub{background:var(--ink)}
+.qbtn .plus{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font:500 14px/1 var(--f-mono);transition:transform .4s var(--ease),background .3s}
+.qbtn[aria-expanded="true"] .plus{transform:rotate(45deg);background:var(--pink-2)}
+.ans{display:flex;align-items:center;gap:10px;justify-content:flex-end}
+.ans .bub{border-radius:20px;max-width:440px;font-weight:500;font-size:14.5px;padding:10px 16px;line-height:1.6}
+.ans .bub a{color:#fff;text-underline-offset:3px}
+.qa-sys{text-align:center;font-size:12.5px;font-weight:700;color:#b9adb3;margin-top:10px}
+
+/* ---------- CONTACT ---------- */
+.ctable{margin-top:40px;border-top:2px solid var(--ink)}
+.chead,.crow{display:grid;grid-template-columns:60px 1.2fr 1fr 1.3fr 48px;gap:14px;align-items:center;padding:0 10px}
+.chead{font:500 11px/1 var(--f-mono);color:var(--ink-2);padding-top:12px;padding-bottom:12px;border-bottom:1.5px solid var(--ink)}
+.crow{position:relative;min-height:78px;text-decoration:none;border-bottom:1.5px solid var(--line);isolation:isolate;overflow:hidden;transition:color .3s}
+.crow::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pink);transform:scaleX(0);transform-origin:left;transition:transform .55s var(--snap)}
+.crow:hover{color:#fff}
+.crow:hover::before{transform:none}
+.crow .mono{font-size:12px;color:var(--ink-2);transition:color .3s}
+.crow:hover .mono{color:#fff}
+.crow b{font-family:var(--f-tc);font-weight:900;font-size:clamp(17px,1.9vw,22px)}
+.crow .use{font-family:var(--f-tc);font-size:14.5px}
+.crow .ca{width:34px;height:34px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;transition:transform .5s var(--ease)}
+.crow .ca svg{width:14px;height:14px}
+.crow:hover .ca{transform:rotate(45deg)}
+.c-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+
+
+/* ---------- QUEUE ---------- */
+.sync{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:30px;padding:12px 16px 12px 18px;border:1.5px solid #6a6166;border-radius:6px;background:rgba(255,255,255,.6)}
+.sync-l{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:12.5px}
+.sync-l b{font-weight:500}
+.sync-dot{width:10px;height:10px;border-radius:50%;background:#b9adb3;flex:none}
+.sync.live .sync-dot{background:var(--pink);animation:ping 1.8s ease-out infinite}
+.sync.live #syncMode{color:var(--pink)}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(238,94,152,.55)}100%{box-shadow:0 0 0 12px rgba(238,94,152,0)}}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);margin-top:30px;border-top:2px solid var(--ink)}
+.kpi{display:grid;gap:4px;padding:16px 18px 18px;border-right:1.5px solid var(--line)}
+.kpi:last-child{border-right:0}
+.kl{display:flex;align-items:center;gap:8px;font-family:var(--f-tc);font-weight:700;font-size:14px}
+.kv{font-weight:600;font-size:clamp(48px,6vw,76px);line-height:.95;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.ks{font-size:11px;color:var(--ink-2)}
+.sw{width:12px;height:12px;border-radius:3px;flex:none}
+.sw.done,.segbar i.done{background:var(--q-done)}
+.sw.wip,.segbar i.wip{background:var(--q-wip)}
+.sw.wait,.segbar i.wait{background:repeating-linear-gradient(135deg,var(--q-wait) 0 3px,#fff 3px 5px);box-shadow:inset 0 0 0 1px var(--q-wip)}
+.segbar{display:flex;gap:2px;height:8px;margin-top:8px}
+.segbar i{display:block;min-width:0;border-radius:8px;transform-origin:left center}
+.page.active .segbar i{animation:segIn 1.1s var(--ease) both;animation-delay:calc(var(--base,.1s) + .55s)}
+@keyframes segIn{from{transform:scaleX(0)}}
+.qgrid{display:grid;grid-template-columns:1.15fr 1fr;gap:40px;margin-top:64px;align-items:start}
+.qarch{margin-top:64px}
+.qh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-bottom:10px;border-bottom:2px solid var(--ink);font-weight:800;font-size:24px;letter-spacing:-.03em}
+.qh span{font-family:var(--f-tc);font-weight:700;font-size:14px;color:var(--pink);letter-spacing:0}
+.qh span b{font-family:var(--f-body);font-weight:700}
+.qrow{display:grid;grid-template-columns:34px 1fr auto;grid-template-areas:"n name stat" "n bar bar";gap:8px 12px;align-items:center;padding:14px 0;border-bottom:1.5px dashed var(--line)}
+.qrow .qn{grid-area:n;align-self:start;padding-top:5px;font-size:12px;color:var(--ink-2)}
+.qname{grid-area:name;display:flex;align-items:center;gap:10px;min-width:0}
+.qname b{font-family:var(--f-tc);font-weight:900;font-size:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qstat{grid-area:stat;display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border:1.5px solid var(--ink);border-radius:999px;font-family:var(--f-tc);font-weight:700;font-size:13px;white-space:nowrap}
+.qstat.wip{background:var(--q-wip);border-color:var(--q-wip);color:#fff}
+.qstat svg{width:13px;height:13px}
+.qbar{grid-area:bar;position:relative;height:8px;border-radius:8px;background:#efe8eb;overflow:hidden}
+.qbar i{position:absolute;top:0;bottom:0;left:-40px;right:-40px}
+.qbar.wip i{background:repeating-linear-gradient(135deg,var(--q-wip) 0 8px,#f7a6c6 8px 16px);animation:stripe 1s linear infinite}
+.qbar.wait i{background:repeating-linear-gradient(135deg,var(--q-wait) 0 3px,transparent 3px 7px)}
+@keyframes stripe{to{transform:translateX(22.63px)}}
+.qempty{padding:18px 0;font-family:var(--f-tc);color:var(--ink-2)}
+.tiers{display:grid;gap:16px;padding-top:18px}
+.tier{position:relative;display:grid;grid-template-columns:92px 1fr 34px;align-items:center;gap:12px;cursor:default}
+.tier .tl{font-family:var(--f-tc);font-weight:700;font-size:14px}
+.tier .tt{position:relative;height:14px;background:#f8d6e3;border-radius:0 4px 4px 0}
+.tier .tf{position:absolute;left:0;top:0;bottom:0;background:var(--q-wip);border-radius:0 4px 4px 0;transform-origin:left center;transition:background .25s}
+.qsec.in .tier .tf{animation:segIn 1s var(--ease) both;animation-delay:calc(.25s + var(--i) * 90ms)}
+.tier:hover .tf{background:var(--q-done)}
+.tier .tv{font-weight:600;font-size:16px;text-align:right;font-variant-numeric:tabular-nums}
+.tier .tip{position:absolute;left:104px;bottom:calc(100% + 6px);padding:6px 9px;background:var(--ink);color:#fff;font:500 12px/1.3 var(--f-mono);white-space:nowrap;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s}
+.tier:hover .tip{opacity:1;transform:none}
+.archive{display:flex;flex-wrap:wrap;gap:8px;padding-top:18px}
+.chip{display:inline-flex;align-items:baseline;gap:6px;padding:6px 10px;border:1.5px solid var(--ink);background:var(--white);font-family:var(--f-tc);font-weight:700;font-size:14px;transition:background .25s,color .25s,transform .3s var(--ease)}
+.chip small{font:500 11px/1 var(--f-mono);color:var(--ink-2);transition:color .25s}
+.chip:hover{background:var(--ink);color:#fff;transform:translateY(-2px)}
+.chip:hover small{color:var(--pink-2)}
+.qsec.in .chip{animation:pop .4s var(--ease) both;animation-delay:calc(.2s + var(--i) * 22ms)}
+
+/* ---------- FORM ---------- */
+.formwrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;align-items:start;padding-top:40px}
+.fn-body{padding:4px 0}
+.fn{display:grid;gap:4px;padding:14px 16px;border-bottom:1px dashed var(--line)}
+.fn:last-child{border-bottom:0}
+.fn .mono{font-size:11.5px;color:var(--ink-2)}
+.fn p{font-family:var(--f-tc);font-weight:500;font-size:16px;line-height:1.6}
+.fn p b{font-weight:900}
+.chain i{font-style:normal;color:var(--pink);font-weight:700;margin:0 2px}
+.formwrap .c-cta{margin-top:16px}
+.fwin{display:grid;grid-template-rows:auto 1fr auto;background:var(--white);border:2px solid var(--ink)}
+.fwin .win-bar span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fstage{position:relative;min-height:560px;background:var(--pink-3);overflow:hidden}
+.fframe{display:block;width:100%;height:1150px;border:0;background:#fff;opacity:0;transition:opacity .6s}
+.fframe.on{opacity:1}
+.fload{position:absolute;inset:0;display:grid;place-items:center;font-size:12.5px;color:var(--ink-2)}
+.ffall{position:absolute;inset:0;display:grid;align-content:center;justify-items:start;gap:18px;padding:34px;isolation:isolate;animation:pop .5s var(--ease) both}
+.ffall .big{font-weight:800;font-size:clamp(52px,6vw,88px);line-height:.88;letter-spacing:-.06em}
+.ffall .big em{font-style:normal;color:var(--pink)}
+.ffall p{font-family:var(--f-tc);color:var(--ink-2);max-width:24em}
+.ffall .deco{position:absolute;right:-70px;bottom:-70px;width:320px;height:320px;z-index:-1;animation:spin 50s linear infinite}
+.fopen{text-decoration:none;border-bottom:1.5px solid var(--pink)}
+.fopen:hover{color:var(--pink)}
+
+/* ---------- footer ---------- */
+.foot{margin-top:110px;padding:26px 0 40px;border-top:2px solid var(--ink)}
+.f-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px}
+.f-row .mono{font-size:12px}
+.credits{text-align:center;margin-top:30px;font-size:14px;color:var(--ink-2)}
+.credits a{text-decoration:none;font-weight:500}
+.credits a:hover{color:var(--pink)}
+
+/* ---------- responsive ---------- */
+@media (max-width:1020px){
+  .info{grid-template-columns:1fr 1fr}
+  .tiles{grid-template-columns:repeat(4,1fr)}
+  .qgrid,.formwrap{grid-template-columns:1fr}
+  .terms{grid-template-columns:repeat(2,1fr)}
+  .term:nth-child(2){border-right:0}
+  .term:nth-child(-n+2){border-bottom:1.5px solid var(--line)}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .about-grid,.qa,.works{grid-template-columns:1fr}
+  .w-side{grid-template-rows:none;grid-template-columns:1fr 1fr}
+  .ib{grid-template-columns:auto auto;padding-left:110px}
+  .ib-t{grid-column:1/-1}
+  .inkbar{grid-template-columns:200px 1fr}
+}
+@media (max-width:720px){
+  .wrap{width:calc(100% - 32px)}
+  .hdr .wrap{height:70px;gap:10px}
+  .menu{display:none}
+  .plabel{display:block}
+  .mbtn{display:grid}
+  .st-top em{display:block;margin-top:2px}
+  .ptitle h1{font-stretch:100%}
+  .logo{width:44px;height:44px}.logo svg{width:26px;height:26px}
+  .toggle{width:92px;height:42px}
+  .menu a{padding:10px 9px;font-size:14px}
+  .menu a::after{left:9px;right:9px}
+  .clock{display:none}
+  .phead{grid-template-columns:1fr auto;padding-top:28px}
+  .date b{font-size:36px}
+  .hashtag{font-size:18px;margin-top:18px}
+  .ptitle .meta{margin-left:0;text-align:left;width:100%;padding-top:10px}
+  .status{padding:16px 16px 14px}
+  .info{grid-template-columns:1fr;gap:30px}
+  .bigtype{grid-template-columns:1fr;padding-top:40px}
+  .bt-side{justify-items:start;text-align:left;padding-bottom:0}
+  .vbar{width:100%;min-height:0;grid-template-rows:none;grid-template-columns:1fr auto}
+  .vbar .vt{justify-content:flex-start;align-items:center;min-height:64px;padding-left:16px}
+  .vbar .vt svg{display:none}
+  .vbar .vb{grid-auto-flow:column;align-items:center}
+  .bt-main .flag{display:none}
+  .inkbar{grid-template-columns:1fr;margin-top:50px}
+  .inkbar .slashes{height:70px;min-height:0;width:200px}
+  .ib{margin-left:0;clip-path:polygon(40px 0,100% 0,100% 100%,0 100%);padding:20px 20px 20px 34px;gap:18px 30px}
+  .tiles{grid-template-columns:repeat(2,1fr);margin-top:50px}
+  .tile{min-height:140px;gap:30px}
+  .terms{grid-template-columns:1fr}
+  .term{border-right:0;border-bottom:1.5px solid var(--line)}
+  .steps{grid-template-columns:1fr 1fr;gap:10px}
+  .step{padding:12px 12px 14px}
+  .step h3{font-size:17px;margin:10px 0 6px}
+  .step p{font-size:13.5px}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi:nth-child(2){border-right:0}
+  .kpi:nth-child(-n+2){border-bottom:1.5px solid var(--line)}
+  .qgrid,.formwrap{grid-template-columns:1fr}
+  .qgrid{margin-top:48px}
+  .fframe{height:1000px}
+  .ffall{padding:24px}
+  .notice{grid-template-columns:1fr}
+  .nrow{grid-template-columns:40px 1fr;gap:4px 10px}
+  .nrow p{grid-column:2}
+  .w-side{grid-template-columns:1fr}
+  .chead{display:none}
+  .crow{grid-template-columns:44px 1fr 40px;grid-template-areas:"n name a" "n use a";padding:14px 10px;gap:2px 12px}
+  .crow .mono.n{grid-area:n}
+  .crow b{grid-area:name}
+  .crow .use{grid-area:use}
+  .crow .plat{display:none}
+  .crow .ca{grid-area:a}
+  .foot{margin-top:80px}
+  .f-row{justify-content:center}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  .cut .wline{stroke-dashoffset:0}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== loader ===== -->
+<div id="loader" aria-hidden="true">
+  <div class="wrap ld-in">
+    <div class="ld-top"><span class="logo sm"><svg viewBox="-20 -20 40 40"><g class="daisy" data-n="10" data-rx="3.4" data-ry="7.6" data-d="9" data-c="4.4" data-fill="#fff" data-center="#ffc5db"></g></svg></span><span class="mono">SILUMI DATABASE // LIVE2D COMMISSION</span></div>
+    <ol class="ld-log mono" id="ldLog"></ol>
+    <svg class="ld-circle" viewBox="-110 -110 220 220">
+      <g class="spin">
+        <circle class="dr" r="100" pathLength="1"/>
+        <circle class="dr p d2" r="90" pathLength="1"/>
+        <polygon class="dr d3" pathLength="1" points="0,-84 72.7,42 -72.7,42"/>
+        <polygon class="dr d3" pathLength="1" points="0,84 72.7,-42 -72.7,-42"/>
+        <circle class="dr p d4" r="40" pathLength="1"/>
+      </g>
+      <g class="daisy" data-n="12" data-rx="7" data-ry="17" data-d="24" data-c="9" data-fill="#fff" data-stroke="#2a2429" data-sw="1" data-center="#ee5e98"></g>
+    </svg>
+    <div class="ld-bottom">
+      <b class="ld-pct"><span id="ldPct">000</span><i>%</i></b>
+      <div class="ld-bar"><i id="ldBar"></i></div>
+      <div class="mono"><span>Loading /live2d-commission</span><span id="ldLeft">2 sec left</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== page transition ===== -->
+<div id="warp" aria-hidden="true">
+  <div class="w-ink"></div><div class="w-pink"></div>
+  <div class="w-txt"><div class="wrap"><span class="mono" id="wPath">Loading /silumi/about</span><b id="wNum">02</b><span id="wName">ABOUT 關於我</span><div class="w-bar"><i></i></div></div></div>
+</div>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<!-- ===== header ===== -->
+<header class="hdr">
+  <div class="wrap">
+    <a class="logo" href="#home" aria-label="希露米首頁"><svg viewBox="-20 -20 40 40" aria-hidden="true"><g class="daisy" data-n="10" data-rx="3.4" data-ry="7.6" data-d="9" data-c="4.4" data-fill="#fff" data-center="#ffc5db"></g></svg></a>
+    <nav class="menu" aria-label="頁面">
+      <a href="#home">HOME</a>
+      <a href="#about">ABOUT</a>
+      <a href="#works">WORKS</a>
+      <a href="#commission">COMMISSION</a>
+      <a href="#queue">QUEUE</a>
+      <a href="#form">FORM</a>
+      <a href="#qa">Q&amp;A</a>
+      <a href="#contact">CONTACT</a>
+    </nav>
+    <span class="plabel mono" id="plabel">01 / <b>HOME</b></span>
+    <button class="toggle" id="toggle" aria-pressed="true" aria-label="花瓣特效">
+      <span class="knob"></span>
+      <span class="off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/></svg></span>
+      <span class="on"><svg viewBox="-20 -20 40 40"><g class="daisy" data-n="8" data-rx="3.8" data-ry="7.5" data-d="8.5" data-c="4.2" data-fill="currentColor" data-center="#ffc5db"></g></svg></span>
+    </button>
+    <button class="mbtn" id="mbtn" aria-expanded="false" aria-controls="msheet" aria-label="開啟頁面選單"><span></span><span></span></button>
+  </div>
+  <div class="wrap pathrow">
+    <div class="path"><svg viewBox="0 0 24 24" fill="#2a2429"><path d="M2 5h8l2 2h10v13H2z"/></svg><span aria-hidden="true">›</span><span class="crumbs mono">Silumi Database/Live2D Commission/<b id="crumb">home</b><i class="caret">_</i></span></div>
+    <div class="clock mono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span id="clock">--:--:--</span></div>
+    <a class="xbtn" href="#home" aria-label="回到首頁"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></a>
+  </div>
+</header>
+
+<nav id="msheet" aria-label="頁面選單">
+  <div class="wrap ms-head"><span class="mono">SILUMI DATABASE // INDEX</span><button class="xbtn" id="mclose" aria-label="關閉選單" style="background:var(--white);cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <ol class="wrap ms-list">
+    <li style="--i:0"><a href="#home"><span class="mono">01</span><b>HOME</b><small>首頁</small></a></li>
+    <li style="--i:1"><a href="#about"><span class="mono">02</span><b>ABOUT</b><small>關於我</small></a></li>
+    <li style="--i:2"><a href="#works"><span class="mono">03</span><b>WORKS</b><small>作品集</small></a></li>
+    <li style="--i:3"><a href="#commission"><span class="mono">04</span><b>COMMISSION</b><small>委託說明</small></a></li>
+    <li style="--i:4"><a href="#queue"><span class="mono">05</span><b>QUEUE</b><small>目前排單</small></a></li>
+    <li style="--i:5"><a href="#form"><span class="mono">06</span><b>FORM</b><small>委託表單</small></a></li>
+    <li style="--i:6"><a href="#qa"><span class="mono">07</span><b>Q&amp;A</b><small>常見問題</small></a></li>
+    <li style="--i:7"><a href="#contact"><span class="mono">08</span><b>CONTACT</b><small>聯絡我</small></a></li>
+  </ol>
+  <div class="wrap ms-foot"><span class="mono" style="font-size:12px;color:var(--ink-2)">© 2026 SILUMI</span><a class="btn sm pink" href="#form">填表報價<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a></div>
+</nav>
+
+<main id="main">
+
+<!-- ================= HOME ================= -->
+<section class="page" data-page="home" aria-label="首頁">
+  <div class="wrap">
+    <div class="phead">
+      <div class="rise" style="--d:0">
+        <div class="date"><b data-day>18</b><span><i data-month>November</i><i data-year>2026</i></span></div>
+        <div class="hashtag">#LetHerBloom</div>
+      </div>
+      <div class="instr rise" style="--d:1"><b>Improvised<br>Magic</b><div class="dashes"></div><span class="mono">PAGE 01 / 08</span></div>
+    </div>
+
+    <div class="status rise" style="--d:2">
+      <div class="st-top"><span>Rigging… <em class="mono">your_character.psd → model3.json</em></span><b class="mono">WAITING</b></div>
+      <div class="st-bar"><i></i></div>
+      <div class="st-bot"><span class="mono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>等待你的委託表單</span><a class="btn sm pink" href="#form">填表報價<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a></div>
+    </div>
+
+    <svg class="cut rise" style="--d:3" viewBox="0 0 1200 470" role="img" aria-label="L2D 字樣，字裡是雛菊與魔法陣">
+      <defs>
+        <pattern id="ht" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(28)">
+          <circle cx="4.5" cy="4.5" r="2.3" fill="#ee5e98"/>
+          <animateTransform attributeName="patternTransform" type="translate" from="0 0" to="0 9" dur="2.4s" repeatCount="indefinite" additive="sum"/>
+        </pattern>
+        <pattern id="ht2" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(28)"><circle cx="3" cy="3" r="1.25" fill="#2a2429"/></pattern>
+        <linearGradient id="fadeG" x1="0" y1="0" x2="1" y2=".7"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+        <mask id="fadeM"><rect width="1200" height="470" fill="url(#fadeG)"/></mask>
+        <clipPath id="wordClip"><text class="wt" x="600" y="452" text-anchor="middle" textLength="1176" lengthAdjust="spacingAndGlyphs">L2D</text></clipPath>
+      </defs>
+      <g clip-path="url(#wordClip)">
+        <rect width="1200" height="470" fill="#ffeef4"/>
+        <g class="h-art">
+          <rect width="1200" height="470" fill="url(#ht)" mask="url(#fadeM)"/>
+          <circle cx="170" cy="110" r="190" fill="#ffc5db"/>
+          <circle cx="1090" cy="420" r="230" fill="#ffc5db"/>
+          <g class="h-ring" fill="none" stroke="#2a2429">
+            <circle cx="600" cy="262" r="400" stroke-width="1"/>
+            <circle cx="600" cy="262" r="380" stroke="#ee5e98" stroke-width="2" stroke-dasharray="4 10"/>
+            <circle cx="600" cy="262" r="350" stroke-width="1"/>
+            <polygon stroke-width="1" points="600,-88 903.1,437 296.9,437"/>
+            <polygon stroke-width="1" points="600,612 903.1,87 296.9,87"/>
+            <g id="ticks"></g>
+          </g>
+          <g class="h-daisy">
+            <g class="daisy" transform="translate(600 262) rotate(11)" data-n="16" data-rx="40" data-ry="128" data-d="168" data-c="0" data-fill="#ffc5db" data-stroke="#2a2429" data-sw="3"></g>
+            <g class="daisy" transform="translate(600 262)" data-n="16" data-rx="46" data-ry="150" data-d="196" data-c="0" data-fill="#ffffff" data-stroke="#2a2429" data-sw="3" data-vein="#ffc5db"></g>
+            <circle cx="600" cy="262" r="84" fill="#ee5e98" stroke="#2a2429" stroke-width="3"/>
+            <circle cx="600" cy="262" r="84" fill="url(#ht2)" opacity=".35"/>
+            <circle cx="600" cy="262" r="58" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="3 7"/>
+          </g>
+          <g fill="#2a2429">
+            <path class="tw" style="animation-delay:0s" d="M240 300 q4 20 24 24 q-20 4 -24 24 q-4 -20 -24 -24 q20 -4 24 -24z"/>
+            <path class="tw" style="animation-delay:.9s" d="M960 110 q3 14 17 17 q-14 3 -17 17 q-3 -14 -17 -17 q14 -3 17 -17z"/>
+            <path class="tw" style="animation-delay:1.6s" d="M1040 300 q4 20 24 24 q-20 4 -24 24 q-4 -20 -24 -24 q20 -4 24 -24z" fill="#ee5e98"/>
+            <path class="tw" style="animation-delay:.4s" d="M120 400 q3 14 17 17 q-14 3 -17 17 q-3 -14 -17 -17 q14 -3 17 -17z" fill="#ee5e98"/>
+          </g>
+        </g>
+      </g>
+      <text class="wt wline" x="600" y="452" text-anchor="middle" textLength="1176" lengthAdjust="spacingAndGlyphs">L2D</text>
+    </svg>
+
+    <div class="info">
+      <div class="i-name rise" style="--d:4">
+        <h2>希露米 <i>//</i></h2>
+        <div class="i-role"><span class="box">02</span><b>Live2D Rigger</b></div>
+        <div class="i-num"><b><span data-count="29" id="homeDone">00</span><sup>✿</sup></b><small>Commissions<br>completed<br>已完工委託</small></div>
+        <div class="mono sub">// QUEUE.SHEET</div>
+        <div class="i-intro"><p>你好🌼 我是希露米，一位 Live2D 建模師。把角色交給我，讓她在畫面裡眨眼、轉頭、呼吸。</p>
+          <svg class="emblem" viewBox="-30 -30 60 60" aria-hidden="true"><circle r="27" fill="none" stroke="#2a2429" stroke-width="2.5"/><g class="daisy" data-n="12" data-rx="4.4" data-ry="10" data-d="12" data-c="5" data-fill="#fff" data-stroke="#2a2429" data-sw="1.4" data-center="#ee5e98"></g></svg>
+        </div>
+      </div>
+      <div class="i-col rise" style="--d:5">
+        <span><span class="tag">L2D · 26</span></span>
+        <span><span class="k">SILUMI</span><span class="v">Live2D 建模</span></span>
+        <span><span class="k">QUOTE</span><span class="v">依需求報價 // 填表後回覆</span></span>
+        <span><span class="k">QUEUE</span><span class="v"><a href="#queue">排單公開中 ✿</a></span></span>
+        <span><span class="wip">Work In Progress</span><span class="v">製作進度都在排單表</span></span>
+      </div>
+      <div class="i-col r rise" style="--d:6">
+        <span class="rule"></span>
+        <span><span class="big">RIGGING</span><span class="v mono" style="font-size:11px">PARAMETER · DEFORMER · PHYSICS</span></span>
+        <span><span class="k"><i>APPROX</i> [ IN QUEUE ]</span><span class="v"><a href="#queue">查看目前排單 →</a></span></span>
+        <span><span class="k">BLOOM I MAGIC</span><span class="v">of the daisy</span></span>
+        <span style="display:flex;justify-content:flex-end;align-items:center;gap:10px"><svg class="diam" viewBox="0 0 60 60" aria-hidden="true"><g transform="rotate(45 30 30)"><rect x="12" y="12" width="17" height="17" fill="#ee5e98"/><rect x="31" y="12" width="17" height="17" fill="#2a2429"/><rect x="12" y="31" width="17" height="17" fill="#ffc5db"/><rect x="31" y="31" width="17" height="17" fill="#fff" stroke="#2a2429"/></g></svg><b style="font-size:24px;font-weight:800;letter-spacing:-.04em">✿ 2K26</b></span>
+      </div>
+      <div class="rise" style="--d:7">
+        <div class="chat" id="homeChat" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tick rise" style="--d:8" aria-hidden="true"><div class="track">
+    <span>Live2D Rigging <i>✿</i> 委託報價 <i>✦</i> Parameter <i>✿</i> Deformer <i>✦</i> Physics <i>✿</i> Silumi Database <i>✦</i> 排單公開中 <i>✿</i></span>
+    <span>Live2D Rigging <i>✿</i> 委託報價 <i>✦</i> Parameter <i>✿</i> Deformer <i>✦</i> Physics <i>✿</i> Silumi Database <i>✦</i> 排單公開中 <i>✿</i></span>
+  </div></div>
+
+  <div class="wrap">
+    <div class="inkbar sr">
+      <svg class="slashes" viewBox="0 0 290 120" preserveAspectRatio="xMinYMid meet" aria-hidden="true" fill="#2a2429">
+        <polygon points="0,38 8,38 8,46"/>
+        <polygon points="96,0 102,0 88,40 150,40 70,96 62,120 58,120 66,96 4,96 84,40"/>
+        <polygon points="240,0 246,0 232,40 290,40 212,96 204,120 200,120 208,96 146,96 226,40"/>
+      </svg>
+      <div class="ib">
+        <div class="ib-c"><small>TYPE</small><b>L2D<em>.</em></b><small>RIGGER ✦</small></div>
+        <div class="ib-c"><small>QUOTE</small><b>FORM</b><small>依需求報價</small></div>
+        <div class="ib-t">
+          <b>Proceed With Bloom</b>
+          <p>填表報價 → 訂金 50% → 排單 → 製作。表單填完，我會依照你的需求回覆報價。</p>
+          <div class="ib-f"><small>ADDITIONAL: DISCORD · X · YOUTUBE</small><a class="btn sm pink" href="#form">我想委託<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a></div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="tiles sr" aria-label="前往頁面">
+      <a class="tile" href="#about"><span class="t-n">02 / ABOUT</span><span><b>ABOUT</b><small>關於我</small></span><svg class="ta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      <a class="tile" href="#works"><span class="t-n">03 / WORKS</span><span><b>WORKS</b><small>作品集</small></span><svg class="ta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      <a class="tile" href="#commission"><span class="t-n">04 / COMMISSION</span><span><b>COMMISSION</b><small>委託說明</small></span><svg class="ta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      <a class="tile" href="#queue"><span class="t-n">05 / QUEUE</span><span><b>QUEUE</b><small>目前排單</small></span><svg class="ta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      <a class="tile" href="#qa"><span class="t-n">07 / Q&amp;A</span><span><b>Q&amp;A</b><small>常見問題</small></span><svg class="ta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      <a class="tile" href="#contact"><span class="t-n">08 / CON<svg class="ta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>CT</span><span><b>CON<svg class="ta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>CT</b><small>聯絡我</small></span><svg class="ta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      <a class="tile" href="https://discord.gg/yBV6NV3sUv" target="_blank" rel="noopener"><span class="t-n">✦ / DISCORD</span><span><b>DISCORD</b><small>一起聊天</small></span><svg class="ta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      <a class="tile pink" href="#form"><span class="t-n">06 / FORM</span><span><b>FORM</b><small>填表報價</small></span><svg class="ta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+    </nav>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="page" data-page="about" aria-label="關於我" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <div class="rise" style="--d:0">
+        <div class="date"><b data-day>18</b><span><i data-month>November</i><i data-year>2026</i></span></div>
+        <div class="hashtag">#HelloSilumi</div>
+      </div>
+      <div class="instr rise" style="--d:1"><b>Profile<br>Record</b><div class="dashes"></div><span class="mono">PAGE 02 / 08</span></div>
+      <div class="ptitle rise" style="--d:2"><span class="box">02</span><h1 data-scr>ABOUT</h1><span class="tc">關於我</span><span class="meta mono">SILUMI DATABASE<br>/profile</span></div>
+    </div>
+
+    <div class="bigtype">
+      <div class="bt-main rise" style="--d:3"><span class="hl" aria-hidden="true"></span><p class="l1">hello,</p><p class="l2">i'm silumi.</p><span class="flag" aria-hidden="true"></span></div>
+      <div class="bt-side rise" style="--d:4">
+        <div class="bt-meta"><b>02</b><span><u>live2d · rigger</u>profile</span></div>
+        <p class="s1">never stop</p><p class="s2">blooming!!</p>
+      </div>
+      <a class="vbar rise" style="--d:5" href="#works" aria-label="前往作品集">
+        <span class="vt"><svg viewBox="-60 -60 120 120" aria-hidden="true"><g class="daisy" data-n="12" data-rx="9" data-ry="22" data-d="30" data-c="12" data-fill="#fff" data-stroke="#2a2429" data-sw="1.5" data-center="#2a2429"></g></svg><small>#rigging</small></span>
+        <span class="vb"><small>Next<br>Page</small><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>03</b></span>
+      </a>
+    </div>
+
+    <div class="about-grid">
+      <div class="win sr">
+        <div class="win-bar mono"><span>PROFILE.l2d</span><span class="dots3"><i></i><i></i><i></i></span></div>
+        <dl class="win-body">
+          <div><dt>NAME</dt><dd>希露米 <span class="pk">🌼</span></dd></div>
+          <div><dt>ALIAS</dt><dd>Silumi · 叫我露露就可以囉 <span class="pk">✨</span></dd></div>
+          <div><dt>ROLE</dt><dd>Live2D Rigger</dd></div>
+          <div><dt>SHOP</dt><dd>希露米Live2D 小舖 <span class="pk">🌼</span></dd></div>
+          <div><dt>SOFTWARE</dt><dd>VTube Studio</dd></div>
+          <div><dt>COMMISSION</dt><dd>填表報價 <span class="pk">✿</span></dd></div>
+          <div><dt>FIND</dt><dd>X · Discord · YouTube</dd></div>
+        </dl>
+        <div class="win-foot mono"><span>ID // 0001<br>SILUMI DATABASE</span><svg class="barcode" data-seed="11" aria-hidden="true"></svg></div>
+      </div>
+      <div class="sr" style="--d:1">
+        <p class="statement">你好🌼 我是希露米，<br>一位 <mark>Live2D 建模師</mark>。</p>
+        <p class="st-p">我會替你的角色設定參數、變形器和物理，讓一張靜止的立繪學會眨眼、轉頭、呼吸，在畫面裡活過來。</p>
+        <div class="c-cta"><a class="btn pink" href="#commission">委託說明<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a><a class="btn" href="#works">看作品</a></div>
+      </div>
+    </div>
+
+    <div class="terms sr">
+      <div class="term"><span class="mono">01 / PARAM</span>
+        <svg viewBox="0 0 80 80" fill="none" stroke="#2a2429" stroke-width="2" aria-hidden="true"><path d="M10 24h60M10 40h60M10 56h60"/><circle cx="30" cy="24" r="6" fill="#ee5e98"/><circle cx="54" cy="40" r="6" fill="#fff"/><circle cx="20" cy="56" r="6" fill="#ffc5db"/></svg>
+        <h3>Parameter<span>參數</span></h3><p>角度、眼睛、嘴巴，每一個動作都由參數控制。</p></div>
+      <div class="term"><span class="mono">02 / DEFORM</span>
+        <svg viewBox="0 0 80 80" fill="none" stroke="#2a2429" stroke-width="2" aria-hidden="true"><path d="M12 14 Q40 6 68 14 M12 34 Q40 26 68 34 M12 54 Q40 46 68 54 M12 72 Q40 64 68 72"/><path d="M12 14 L12 72 M31 11 Q29 40 31 69 M49 11 Q51 40 49 69 M68 14 L68 72" stroke="#ee5e98"/></svg>
+        <h3>Deformer<span>變形器</span></h3><p>讓圖層彎曲、旋轉，做出轉頭時的立體感。</p></div>
+      <div class="term"><span class="mono">03 / PHYSICS</span>
+        <svg viewBox="0 0 80 80" fill="none" stroke="#2a2429" stroke-width="2" aria-hidden="true"><path d="M20 10h40"/><path d="M40 10 Q34 34 44 52 Q52 66 40 74" stroke="#ee5e98" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="10" r="4" fill="#2a2429"/><path d="M26 30 Q22 44 28 56" stroke-dasharray="3 4"/><path d="M58 30 Q62 44 56 56" stroke-dasharray="3 4"/></svg>
+        <h3>Physics<span>物理</span></h3><p>頭髮和飾品跟著動作自然擺動。</p></div>
+      <div class="term"><span class="mono">04 / MOTION</span>
+        <svg viewBox="0 0 80 80" fill="none" stroke="#2a2429" stroke-width="2" aria-hidden="true"><circle cx="40" cy="40" r="28"/><path d="M40 12 A28 28 0 0 1 68 40" stroke="#ee5e98" stroke-width="4"/><path d="M34 30 L52 40 L34 50 Z" fill="#ffc5db"/></svg>
+        <h3>Motion<span>動態</span></h3><p>待機、眨眼、表情切換，讓她一直活著。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMMISSION ================= -->
+<section class="page" data-page="commission" aria-label="委託說明" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <div class="rise" style="--d:0">
+        <div class="date"><b data-day>18</b><span><i data-month>November</i><i data-year>2026</i></span></div>
+        <div class="hashtag">#HowToCommission</div>
+      </div>
+      <div class="instr rise" style="--d:1"><b>Rigging<br>Instruction</b><div class="dashes"></div><span class="mono">PAGE 04 / 08</span></div>
+      <div class="ptitle rise" style="--d:2"><span class="box">04</span><h1 class="long" data-scr>COMMISSION</h1><span class="tc">委託說明</span><span class="meta mono">希露米Live2D 小舖🌼<br>/commission</span></div>
+    </div>
+
+    <div class="bigtype">
+      <div class="bt-main rise" style="--d:3"><span class="hl" aria-hidden="true"></span><p class="l1">live2d</p><p class="l2">commission.</p><span class="flag" aria-hidden="true"></span></div>
+      <div class="bt-side rise" style="--d:4">
+        <div class="bt-meta"><b>08</b><span><u>steps · form</u>to revision</span></div>
+        <p class="s1">let her</p><p class="s2">bloom!!</p>
+      </div>
+      <a class="vbar rise" style="--d:5" href="#form" aria-label="前往委託表單">
+        <span class="vt"><svg viewBox="-60 -60 120 120" aria-hidden="true"><g class="daisy" data-n="12" data-rx="9" data-ry="22" data-d="30" data-c="12" data-fill="#fff" data-stroke="#2a2429" data-sw="1.5" data-center="#2a2429"></g></svg><small>#quote</small></span>
+        <span class="vb"><small>Fill the<br>Form</small><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>06</b></span>
+      </a>
+    </div>
+
+    <div class="pipe sr" id="pipe">
+      <div class="pipe-head"><span>Rigging…<em class="mono">deposit 50% → queue → rigging → test → delivery</em></span><b class="mono" id="pipePct">0%</b></div>
+      <div class="pipe-bar"><i id="pipeBar"></i><span class="pip" style="left:6.25%"></span><span class="pip" style="left:18.75%"></span><span class="pip" style="left:31.25%"></span><span class="pip" style="left:43.75%"></span><span class="pip" style="left:56.25%"></span><span class="pip" style="left:68.75%"></span><span class="pip" style="left:81.25%"></span><span class="pip" style="left:93.75%"></span></div>
+      <ol class="steps">
+        <li class="step"><span class="mono"><b>STEP 01</b><span>FORM</span></span><h3>填表報價</h3><p>填寫委託報價／排單表單，我看過需求後回覆報價。</p></li>
+        <li class="step"><span class="mono"><b>STEP 02</b><span>DEPOSIT</span></span><h3>付訂金 50%</h3><p>確認報價後，先支付 50% 訂金。</p></li>
+        <li class="step"><span class="mono"><b>STEP 03</b><span>QUEUE</span></span><h3>排單</h3><p>排進排單表，隨時都能查看自己的位置。</p></li>
+        <li class="step"><span class="mono"><b>STEP 04</b><span>RIGGING</span></span><h3>製作</h3><p>依照排單順序開始製作模型。</p></li>
+        <li class="step"><span class="mono"><b>STEP 05</b><span>TEST</span></span><h3>模型測試影片</h3><p>先給你看模型測試影片，確認動起來的樣子。</p></li>
+        <li class="step"><span class="mono"><b>STEP 06</b><span>BALANCE</span></span><h3>付尾款</h3><p>看完測試影片後，付清尾款。</p></li>
+        <li class="step"><span class="mono"><b>STEP 07</b><span>DELIVERY</span></span><h3>交件</h3><p>交付 Live2D 模型。</p></li>
+        <li class="step"><span class="mono"><b>STEP 08</b><span>REVISION</span></span><h3>修改</h3><p>交件後，依需要進行修改。</p></li>
+      </ol>
+    </div>
+
+    <div class="notice sr">
+      <h2>NOTICE<span>委託須知</span></h2>
+      <div class="nrows">
+        <div class="nrow"><span class="mono">N.01</span><b>不承接</b><p>R18、獵奇</p></div>
+        <div class="nrow"><span class="mono">N.02</span><b>付款方式</b><p>PayPal（+5% 手續費）、銀行轉帳</p></div>
+        <div class="nrow"><span class="mono">N.03</span><b>駕駛軟體</b><p>VTube Studio</p></div>
+        <div class="nrow"><span class="mono">N.04</span><b>報價</b><p>填寫委託表單後，依需求回覆報價。</p></div>
+        <div class="nrow"><span class="mono">N.05</span><b>檔期</b><p>以排單表為準，可以到排單頁查看。</p></div>
+      </div>
+    </div>
+
+    <div class="c-cta sr">
+      <a class="btn pink" href="#form">填寫委託表單<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      <a class="btn" href="#queue">查看目前排單</a>
+      <a class="btn" href="#qa">常見問題</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WORKS ================= -->
+<section class="page" data-page="works" aria-label="作品集" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <div class="rise" style="--d:0">
+        <div class="date"><b data-day>18</b><span><i data-month>November</i><i data-year>2026</i></span></div>
+        <div class="hashtag">#SeeHerMove</div>
+      </div>
+      <div class="instr rise" style="--d:1"><b>Motion<br>Archive</b><div class="dashes"></div><span class="mono">PAGE 03 / 08</span></div>
+      <div class="ptitle rise" style="--d:2"><span class="box">03</span><h1 data-scr>WORKS</h1><span class="tc">作品集</span><span class="meta mono">SILUMI DATABASE<br>/works</span></div>
+    </div>
+
+    <div class="works">
+      <div class="player rise" style="--d:3" id="player">
+        <span class="pl-top mono"><span class="dots3" aria-hidden="true"><i></i><i></i><i></i></span><span>portfolio — youtube.com/@Silumi_live2D</span><span id="plMode">HD ✦</span></span>
+        <div class="pl-screen" id="plScreen">
+          <a class="pl-fallback" href="https://youtube.com/@Silumi_live2D?si=TaxA-cyoNaKbaCXa" target="_blank" rel="noopener" aria-label="露露的作品集（YouTube）">
+          <svg class="bg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="800" height="400" fill="url(#ht)" opacity=".55"/>
+            <text x="400" y="290" text-anchor="middle" font-family="Archivo, Arial Black, sans-serif" font-weight="900" font-size="230" letter-spacing="-12" fill="none" stroke="#2a2429" stroke-width="2.5" textLength="760" lengthAdjust="spacingAndGlyphs">WORKS</text>
+            <g class="ring" fill="none" stroke="#2a2429">
+              <circle cx="400" cy="200" r="120" stroke-width="1.2"/>
+              <circle cx="400" cy="200" r="104" stroke="#ee5e98" stroke-width="2" stroke-dasharray="3 8"/>
+              <polygon stroke-width="1" points="400,80 503.9,260 296.1,260"/>
+              <polygon stroke-width="1" points="400,320 503.9,140 296.1,140"/>
+            </g>
+          </svg>
+          <span class="play" aria-hidden="true"></span>
+          </a>
+        </div>
+        <span class="pl-bot mono"><span id="tc">00:00</span><span class="scrub" aria-hidden="true"><i></i></span><a href="https://youtube.com/@Silumi_live2D?si=TaxA-cyoNaKbaCXa" target="_blank" rel="noopener">在 YouTube 觀看 ↗</a></span>
+      </div>
+    </div>
+    <div class="w-title sr"><h2>see her move.</h2><p>作品影片會跟著 YouTube 頻道自動更新。</p></div>
+  </div>
+</section>
+
+<!-- ================= QUEUE ================= -->
+<section class="page" data-page="queue" aria-label="目前排單" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <div class="rise" style="--d:0">
+        <div class="date"><b data-day>18</b><span><i data-month>November</i><i data-year>2026</i></span></div>
+        <div class="hashtag">#CurrentQueue</div>
+      </div>
+      <div class="instr rise" style="--d:1"><b>Queue<br>Monitor</b><div class="dashes"></div><span class="mono">PAGE 05 / 08</span></div>
+      <div class="ptitle rise" style="--d:2"><span class="box">05</span><h1 data-scr>QUEUE</h1><span class="tc">目前排單</span><span class="meta mono">模型建模.sheet<br>/queue</span></div>
+    </div>
+
+    <div class="sync rise" style="--d:3" id="sync">
+      <div class="sync-l"><span class="sync-dot" aria-hidden="true"></span><b class="mono" id="syncMode">SNAPSHOT</b><span class="mono" id="syncText">2026/11/18 排單表快照</span></div>
+      <a class="btn sm" href="https://docs.google.com/spreadsheets/d/1YsXMTq3yxh8tSHGCjeOJtHlA5NJQwazL-yxfFVI4Qic/edit?usp=sharing" target="_blank" rel="noopener">開啟排單表<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+    </div>
+
+    <div class="kpis rise" style="--d:4">
+      <div class="kpi"><span class="kl">委託總數</span><b class="kv" data-count="32" id="kTotal">00</b><span class="ks mono">TOTAL</span></div>
+      <div class="kpi"><span class="kl"><i class="sw done" aria-hidden="true"></i>已完工</span><b class="kv" data-count="29" id="kDone">00</b><span class="ks mono">COMPLETED</span></div>
+      <div class="kpi"><span class="kl"><i class="sw wip" aria-hidden="true"></i>製作中</span><b class="kv" data-count="1" id="kWip">00</b><span class="ks mono">IN PROGRESS</span></div>
+      <div class="kpi"><span class="kl"><i class="sw wait" aria-hidden="true"></i>未開工</span><b class="kv" data-count="2" id="kWait">00</b><span class="ks mono">WAITING</span></div>
+    </div>
+    <div class="segbar rise" style="--d:5" id="segbar" role="img" aria-label="已完工 29、製作中 1、未開工 2"><i class="done"></i><i class="wip"></i><i class="wait"></i></div>
+
+    <div class="qgrid">
+      <div class="qsec sr"><h2 class="qh">NOW RIGGING<span>製作中・排隊中</span></h2><div id="qActive"></div></div>
+      <div class="qsec sr" style="--d:1"><h2 class="qh">BY TYPE<span>委託項目</span></h2><div class="tiers" id="qTiers"></div></div>
+    </div>
+    <div class="qsec sr qarch"><h2 class="qh">COMPLETED<span>已完工 <b id="qDoneN">29</b> 件</span></h2><div class="archive" id="qArchive"></div></div>
+  </div>
+</section>
+
+<!-- ================= FORM ================= -->
+<section class="page" data-page="form" aria-label="委託表單" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <div class="rise" style="--d:0">
+        <div class="date"><b data-day>18</b><span><i data-month>November</i><i data-year>2026</i></span></div>
+        <div class="hashtag">#OrderForm</div>
+      </div>
+      <div class="instr rise" style="--d:1"><b>Order<br>Form</b><div class="dashes"></div><span class="mono">PAGE 06 / 08</span></div>
+      <div class="ptitle rise" style="--d:2"><span class="box">06</span><h1 data-scr>FORM</h1><span class="tc">委託表單</span><span class="meta mono">建模委託報價/排單 表單<br>/form</span></div>
+    </div>
+    <div class="formwrap">
+      <aside class="rise" style="--d:3">
+        <div class="win">
+          <div class="win-bar mono"><span>BEFORE_YOU_FILL.txt</span><span class="dots3" aria-hidden="true"><i></i><i></i><i></i></span></div>
+          <div class="fn-body">
+            <div class="fn"><span class="mono">01 · 不承接</span><p><b>R18、獵奇</b></p></div>
+            <div class="fn"><span class="mono">02 · 付款方式</span><p>PayPal（+5% 手續費）<br>銀行轉帳</p></div>
+            <div class="fn"><span class="mono">03 · V皮駕駛艙</span><p>VTube Studio</p></div>
+            <div class="fn"><span class="mono">04 · 流程</span><p class="chain">訂金 50% <i>→</i> 排單 <i>→</i> 製作 <i>→</i> 模型測試影片 <i>→</i> 付尾款 <i>→</i> 交件 <i>→</i> 修改</p></div>
+          </div>
+          <div class="win-foot mono"><span>希露米Live2D 小舖🌼<br>叫我露露就可以囉✨</span><svg class="barcode" data-seed="17" aria-hidden="true"></svg></div>
+        </div>
+        <div class="c-cta"><a class="btn" href="#queue">先看目前排單</a></div>
+      </aside>
+      <div class="fwin rise" style="--d:4">
+        <div class="win-bar mono"><span>建模委託報價/排單 表單 《希露米Live2D 小舖🌼》</span><span>6 PAGES</span></div>
+        <div class="fstage" id="fstage">
+          <div class="fload mono" id="fload"><span>Loading form <i class="caret">_</i></span></div>
+          <div class="ffall" id="ffall" hidden>
+            <svg class="deco" viewBox="-60 -60 120 120" aria-hidden="true"><g class="daisy" data-n="16" data-rx="8" data-ry="22" data-d="30" data-c="13" data-fill="#ffc5db" data-stroke="#2a2429" data-sw="1" data-center="#ee5e98"></g></svg>
+            <span class="tag">FORM · 6 PAGES</span>
+            <p class="big">fill the<br>form<em>!!</em></p>
+            <p>表單一共 6 頁。填完後，我會依照你的需求回覆報價🌼</p>
+            <a class="btn pink" href="https://forms.gle/4Z2c86idRzMb9oCJ9" target="_blank" rel="noopener">開啟委託表單<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+          </div>
+        </div>
+        <div class="pl-bot mono"><span>docs.google.com/forms</span><a class="fopen" href="https://forms.gle/4Z2c86idRzMb9oCJ9" target="_blank" rel="noopener">在新分頁開啟 ↗</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q&A ================= -->
+<section class="page" data-page="qa" aria-label="常見問題" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <div class="rise" style="--d:0">
+        <div class="date"><b data-day>18</b><span><i data-month>November</i><i data-year>2026</i></span></div>
+        <div class="hashtag">#AskSilumi</div>
+      </div>
+      <div class="instr rise" style="--d:1"><b>Question<br>Log</b><div class="dashes"></div><span class="mono">PAGE 07 / 08</span></div>
+      <div class="ptitle rise" style="--d:2"><span class="box">07</span><h1 data-scr>Q&amp;A</h1><span class="tc">常見問題</span><span class="meta mono">SILUMI DATABASE<br>/qa</span></div>
+    </div>
+    <div class="qa">
+      <div class="qa-l rise" style="--d:3">
+        <p class="big">ask<br>anything<em>?</em></p>
+        <p>點一下問題，露露會回答你。沒找到答案的話，歡迎到 Discord 問問看。</p>
+        <a class="btn" href="https://discord.gg/yBV6NV3sUv" target="_blank" rel="noopener">Discord 群組<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      </div>
+      <div class="qlist rise" style="--d:4" id="qlist"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="page" data-page="contact" aria-label="聯絡我" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <div class="rise" style="--d:0">
+        <div class="date"><b data-day>18</b><span><i data-month>November</i><i data-year>2026</i></span></div>
+        <div class="hashtag">#FindSilumi</div>
+      </div>
+      <div class="instr rise" style="--d:1"><b>Link<br>Directory</b><div class="dashes"></div><span class="mono">PAGE 08 / 08</span></div>
+      <div class="ptitle rise" style="--d:2"><span class="box">08</span><h1 class="long" data-scr>CONTACT</h1><span class="tc">聯絡我</span><span class="meta mono">SILUMI DATABASE<br>/contact</span></div>
+    </div>
+    <div class="ctable rise" style="--d:3">
+      <div class="chead"><span>#</span><span>CHANNEL</span><span>PLATFORM</span><span>用途</span><span></span></div>
+      <a class="crow" href="https://forms.gle/4Z2c86idRzMb9oCJ9" target="_blank" rel="noopener"><span class="mono n">01</span><b>委託報價排單</b><span class="mono plat">Google Form</span><span class="use">委託從這裡開始</span><span class="ca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
+      <a class="crow" href="https://docs.google.com/spreadsheets/d/1YsXMTq3yxh8tSHGCjeOJtHlA5NJQwazL-yxfFVI4Qic/edit?usp=sharing" target="_blank" rel="noopener"><span class="mono n">02</span><b>目前排單</b><span class="mono plat">Google Sheets</span><span class="use">檔期與進度</span><span class="ca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
+      <a class="crow" href="https://x.com/silumi_live2d?s=21&amp;t=er1hWkOCvdxz6o6cJniSCQ" target="_blank" rel="noopener"><span class="mono n">03</span><b>希露米的 X</b><span class="mono plat">X · @silumi_live2d</span><span class="use">日常與近況</span><span class="ca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
+      <a class="crow" href="https://discord.gg/yBV6NV3sUv" target="_blank" rel="noopener"><span class="mono n">04</span><b>Discord 群組</b><span class="mono plat">Discord</span><span class="use">一起聊天、問問題</span><span class="ca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
+      <a class="crow" href="https://youtube.com/@Silumi_live2D?si=TaxA-cyoNaKbaCXa" target="_blank" rel="noopener"><span class="mono n">05</span><b>露露的作品集</b><span class="mono plat">YouTube</span><span class="use">模型動態展示</span><span class="ca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
+      <a class="crow" href="https://clibo.tw/commissions/0r3e9R" target="_blank" rel="noopener"><span class="mono n">06</span><b>Clibo</b><span class="mono plat">Clibo</span><span class="use">較少更新</span><span class="ca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
+    </div>
+    <div class="bt-foot sr" style="margin-top:40px">
+      <div class="dark-chip"><b>✿ 100%</b><span><small>SILUMI DATABASE</small><small>6 links · all in one place</small></span></div>
+      <svg class="barcode" data-seed="29" aria-hidden="true"></svg>
+      <span class="marks"><i>L2D</i><i>✿</i></span>
+      <span class="ink-tag"><span>✦</span><em>© SILUMI // 2026</em></span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="f-row"><span class="mono">© 2026 SILUMI · LIVE2D RIGGER</span><svg class="barcode" data-seed="5" aria-hidden="true"></svg><span class="marks"><i>L2D</i><i>✿</i></span></div>
+    <p class="credits"><a href="https://forms.gle/4Z2c86idRzMb9oCJ9" target="_blank" rel="noopener">form</a> • <a href="https://docs.google.com/spreadsheets/d/1YsXMTq3yxh8tSHGCjeOJtHlA5NJQwazL-yxfFVI4Qic/edit?usp=sharing" target="_blank" rel="noopener">queue</a> • <a href="https://x.com/silumi_live2d?s=21&amp;t=er1hWkOCvdxz6o6cJniSCQ" target="_blank" rel="noopener">x</a> • <a href="https://discord.gg/yBV6NV3sUv" target="_blank" rel="noopener">discord</a> • <a href="https://youtube.com/@Silumi_live2D?si=TaxA-cyoNaKbaCXa" target="_blank" rel="noopener">youtube</a> • <a href="https://clibo.tw/commissions/0r3e9R" target="_blank" rel="noopener">clibo</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FORM='https://forms.gle/4Z2c86idRzMb9oCJ9';
+const SHEET='https://docs.google.com/spreadsheets/d/1YsXMTq3yxh8tSHGCjeOJtHlA5NJQwazL-yxfFVI4Qic/edit?usp=sharing';
+
+function safeFinish(){document.body.classList.add('ready');const l=$('#loader');if(l)l.classList.add('done');$$('.sr').forEach(e=>e.classList.add('in'));}
+window.addEventListener('error',safeFinish);
+
+/* ---------- daisy glyph builder ---------- */
+function daisy(g,o){
+  const n=+o.n,rx=+o.rx,ry=+o.ry,d=+o.d,c=+(o.c||0),sw=o.sw||1;
+  const fill=o.fill||'#ee5e98',stroke=o.stroke||'none',center=o.center||'#ffc5db';
+  let s='';
+  for(let i=0;i<n;i++){
+    const a=(360/n*i).toFixed(2);
+    s+=`<g transform="rotate(${a})"><ellipse cx="0" cy="${-d}" rx="${rx}" ry="${ry}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+    if(o.vein)s+=`<line x1="0" y1="${-(d-ry*.75)}" x2="0" y2="${-(d+ry*.7)}" stroke="${o.vein}" stroke-width="3" stroke-linecap="round"/>`;
+    s+=`</g>`;
+  }
+  if(c>0)s+=`<circle r="${c}" fill="${center}" stroke="${stroke==='none'?'none':stroke}" stroke-width="${sw}"/>`;
+  g.innerHTML=s;
+}
+$$('g.daisy').forEach(g=>daisy(g,g.dataset));
+
+/* magic ring ticks */
+(function(){const g=$('#ticks');if(!g)return;let s='';for(let i=0;i<72;i++){const a=i*5*Math.PI/180,r1=350,r2=i%6===0?332:342;s+=`<line x1="${(600+Math.cos(a)*r1).toFixed(1)}" y1="${(262+Math.sin(a)*r1).toFixed(1)}" x2="${(600+Math.cos(a)*r2).toFixed(1)}" y2="${(262+Math.sin(a)*r2).toFixed(1)}" stroke-width="1.2"/>`;}g.innerHTML=s;})();
+
+/* barcodes */
+$$('svg.barcode').forEach(svg=>{
+  let seed=+svg.dataset.seed||1;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  let x=0,s='';while(x<108){const w=1+Math.floor(rnd()*3);s+=`<rect x="${x}" y="0" width="${w}" height="22" fill="#2a2429"/>`;x+=w+1+Math.floor(rnd()*2);}
+  let digits='';for(let i=0;i<12;i++)digits+=Math.floor(rnd()*10);
+  svg.setAttribute('viewBox','0 0 110 30');
+  svg.innerHTML=s+`<text x="0" y="29.5" font-family="IBM Plex Mono, monospace" font-size="6.2" fill="#2a2429" textLength="108">${digits.slice(0,6)}-${digits.slice(6)}+026</text>`;
+});
+
+/* date + clock */
+const now=new Date(),MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+$$('[data-day]').forEach(e=>e.textContent=String(now.getDate()).padStart(2,'0'));
+$$('[data-month]').forEach(e=>e.textContent=MONTHS[now.getMonth()]);
+$$('[data-year]').forEach(e=>e.textContent=now.getFullYear());
+const clk=$('#clock');function tickClock(){const d=new Date();clk.textContent=[d.getHours(),d.getMinutes(),d.getSeconds()].map(v=>String(v).padStart(2,'0')).join(':');}
+tickClock();setInterval(tickClock,1000);
+
+/* ---------- petals canvas ---------- */
+const cv=$('#fx'),ctx=cv.getContext('2d');let W=0,H=0;
+function resize(){const r=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*r;cv.height=H*r;ctx.setTransform(r,0,0,r,0,0);}
+resize();addEventListener('resize',resize);
+const FILL=['#ffffff','#ffc5db','#ee5e98'];
+function petal(top){return{x:Math.random()*W,y:top?-30:Math.random()*H,s:6+Math.random()*7,vy:.3+Math.random()*.55,vx:-.2+Math.random()*.4,r:Math.random()*6.28,vr:(Math.random()-.5)*.02,f:Math.random()*6.28,vf:.015+Math.random()*.03,ph:Math.random()*6.28,c:FILL[Math.random()<.5?0:Math.random()<.7?1:2]};}
+const petals=[];const PN=Math.round(Math.min(22,Math.max(10,innerWidth/60)));
+for(let i=0;i<PN;i++)petals.push(petal(false));
+const stars=[];for(let i=0;i<7;i++)stars.push({x:Math.random(),y:Math.random(),t:Math.random()*200,p:160+Math.random()*160});
+let on=true,T=0,raf=0;
+try{if(localStorage.getItem('silumi-still')==='1')on=false;}catch(e){}
+function drawPetal(p){
+  ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.scale(1,Math.cos(p.f)*.75+.25);
+  const s=p.s;ctx.beginPath();ctx.moveTo(0,-s);ctx.bezierCurveTo(s*.8,-s*.5,s*.55,s*.8,0,s);ctx.bezierCurveTo(-s*.55,s*.8,-s*.8,-s*.5,0,-s);
+  ctx.fillStyle=p.c;ctx.fill();ctx.lineWidth=1;ctx.strokeStyle='#2a2429';ctx.stroke();ctx.restore();
+}
+function drawStar(x,y,s,a){ctx.save();ctx.globalAlpha=a;ctx.translate(x,y);ctx.fillStyle='#ee5e98';ctx.beginPath();ctx.moveTo(0,-s);ctx.quadraticCurveTo(0,0,s,0);ctx.quadraticCurveTo(0,0,0,s);ctx.quadraticCurveTo(0,0,-s,0);ctx.quadraticCurveTo(0,0,0,-s);ctx.fill();ctx.restore();}
+function loop(){
+  T++;ctx.clearRect(0,0,W,H);
+  for(const p of petals){p.y+=p.vy;p.x+=p.vx+Math.sin(T*.01+p.ph)*.3;p.r+=p.vr;p.f+=p.vf;if(p.y>H+30||p.x<-40||p.x>W+40)Object.assign(p,petal(true));drawPetal(p);}
+  for(const st of stars){st.t++;const k=(st.t%st.p)/st.p;const a=Math.sin(k*Math.PI);if(k<.01){st.x=Math.random();st.y=Math.random();}drawStar(st.x*W,st.y*H,3+a*5,a*.8);}
+  raf=requestAnimationFrame(loop);
+}
+const tg=$('#toggle');
+function setFx(v){on=v;tg.setAttribute('aria-pressed',String(v));document.body.classList.toggle('still',!v);cancelAnimationFrame(raf);if(v&&!reduce)raf=requestAnimationFrame(loop);try{localStorage.setItem('silumi-still',v?'0':'1');}catch(e){}}
+tg.addEventListener('click',()=>setFx(!on));
+if(reduce){on=false;}
+setFx(on);
+
+/* ---------- text effects ---------- */
+const GLYPH='ABCDEFGHJKLMNPRSTUVWXYZ0123456789#/✦✿';
+function scramble(el){
+  const fin=el.dataset.fin||(el.dataset.fin=el.textContent);cancelAnimationFrame(el._r);
+  if(reduce){el.textContent=fin;return;}
+  let f=0;const step=()=>{f++;let o='';for(let i=0;i<fin.length;i++){o+=(f>i*2.2+8||fin[i]===' ')?fin[i]:GLYPH[(Math.random()*GLYPH.length)|0];}el.textContent=o;if(f<fin.length*2.2+9)el._r=requestAnimationFrame(()=>setTimeout(step,28));else el.textContent=fin;};step();
+}
+function countUp(el){const to=+el.dataset.count,pad=2,t0=performance.now(),dur=1100;const st=n=>{const k=Math.min(1,(n-t0)/dur),v=Math.round(to*(1-Math.pow(1-k,3)));el.textContent=String(v).padStart(pad,'0');if(k<1)requestAnimationFrame(st);};requestAnimationFrame(st);}
+
+/* ---------- home chat ---------- */
+const HOME_MSGS=[
+  {s:'l',t:'想委託一隻 Live2D 模型！'},
+  {s:'r',t:'歡迎🌼 先填委託報價表單'},
+  {s:'r',t:'看完需求我會回覆報價'},
+  {s:'l',t:'排單要去哪裡看？'},
+  {s:'r',t:'排單表是公開的，隨時都能看'},
+  {sys:'- Silumi 正在等你的表單 -'}
+];
+const AV_ME='<span class="av me" aria-hidden="true"><svg viewBox="-20 -20 40 40"><g class="daisy" data-n="10" data-rx="3.6" data-ry="8" data-d="9" data-c="4.6" data-fill="#ee5e98" data-center="#fff" data-stroke="#2a2429" data-sw=".8"></g></svg></span>';
+const AV_YOU='<span class="av" aria-hidden="true">YOU</span>';
+function bubble(side,html){const m=document.createElement('div');m.className='msg '+side;m.innerHTML=side==='l'?AV_YOU+`<span class="bub">${html}</span>`:`<span class="bub">${html}</span>`+AV_ME;$$('g.daisy',m).forEach(g=>daisy(g,g.dataset));return m;}
+let chatRun=0;
+function playChat(){
+  const box=$('#homeChat');if(!box)return;const id=++chatRun;box.innerHTML='';let i=0;
+  const next=()=>{if(id!==chatRun||i>=HOME_MSGS.length)return;const m=HOME_MSGS[i++];
+    if(m.sys){const d=document.createElement('div');d.className='sysmsg';d.textContent=m.sys;box.appendChild(d);return;}
+    const b=bubble(m.s,'<span class="typing"><i></i><i></i><i></i></span>');box.appendChild(b);
+    setTimeout(()=>{if(id!==chatRun)return;b.querySelector('.bub').textContent=m.t;setTimeout(next,reduce?0:520);},reduce?0:700);
+  };setTimeout(next,reduce?0:500);
+}
+
+/* ---------- Q&A ---------- */
+const QA=[
+  ['要怎麼委託？','到<a href="#form">委託表單</a>頁填寫報價表單，我看過需求後會回覆報價。'],
+  ['委託流程是什麼？','訂金 50% → 排單 → 製作 → 模型測試影片 → 付尾款 → 交件 → 修改。'],
+  ['可以怎麼付款？','PayPal（+5% 手續費）或銀行轉帳。'],
+  ['有不接的類型嗎？','R18、獵奇不承接。'],
+  ['模型用什麼軟體？','VTube Studio。'],
+  ['現在排到哪裡了？','<a href="#queue">排單頁</a>可以看到製作中和排隊中的委託，檔期以排單表為準。'],
+  ['可以先看作品嗎？','YouTube「露露的作品集」有模型的動態展示，日常和近況可以到 X 看看。'],
+  ['要怎麼稱呼你？','叫我露露就可以囉✨']
+];
+(function(){
+  const list=$('#qlist');if(!list)return;
+  QA.forEach(([q,a],i)=>{
+    const it=document.createElement('div');it.className='qa-item';
+    it.innerHTML=`<button class="qbtn" aria-expanded="false" aria-controls="ans${i}" id="q${i}">${AV_YOU}<span class="bub">${q}</span><span class="plus" aria-hidden="true">+</span></button><div class="ans" id="ans${i}" role="region" aria-labelledby="q${i}" hidden><span class="bub"></span>${AV_ME}</div>`;
+    list.appendChild(it);
+    const btn=it.querySelector('.qbtn'),ans=it.querySelector('.ans'),bub=ans.querySelector('.bub');
+    $$('g.daisy',it).forEach(g=>daisy(g,g.dataset));
+    btn.addEventListener('click',()=>{
+      const open=btn.getAttribute('aria-expanded')==='true';
+      if(open){btn.setAttribute('aria-expanded','false');ans.hidden=true;return;}
+      btn.setAttribute('aria-expanded','true');ans.hidden=false;ans.style.animation='none';void ans.offsetWidth;ans.style.animation='pop .45s var(--ease) both';
+      bub.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';
+      setTimeout(()=>{bub.innerHTML=a;},reduce?0:650);
+    });
+  });
+  const sys=document.createElement('p');sys.className='qa-sys';sys.textContent='- 點問題就會收到回覆 -';list.appendChild(sys);
+})();
+
+/* ---------- commission pipeline ---------- */
+let pipeRun=0;
+function playPipe(){
+  const bar=$('#pipeBar'),pct=$('#pipePct'),pips=$$('#pipe .pip'),steps=$$('#pipe .step');if(!bar)return;
+  const xs=pips.map(p=>parseFloat(p.style.left));
+  const id=++pipeRun;pips.forEach(p=>p.classList.remove('lit'));steps.forEach(s=>s.classList.remove('lit'));
+  const t0=performance.now(),dur=reduce?1:3400;
+  const st=n=>{if(id!==pipeRun)return;const k=Math.min(1,(n-t0)/dur),e=1-Math.pow(1-k,2.2),v=e*100;
+    bar.style.width=v+'%';pct.textContent=Math.round(v)+'%';
+    xs.forEach((x,i)=>{if(v>=x){pips[i].classList.add('lit');if(steps[i])steps[i].classList.add('lit');}});
+    if(k<1)requestAnimationFrame(st);else pct.textContent='100% ✿';};
+  requestAnimationFrame(st);
+}
+
+/* works timecode */
+const tcEl=$('#tc');let tcs=0;setInterval(()=>{tcs=(tcs+1)%14;if(tcEl)tcEl.textContent='00:'+String(tcs).padStart(2,'0');},1000);
+
+/* ---------- queue data (live when self-hosted, snapshot in preview) ---------- */
+const SHEET_ID='1YsXMTq3yxh8tSHGCjeOJtHlA5NJQwazL-yxfFVI4Qic';
+const SNAPSHOT={date:'2026/11/18',rows:[
+  ['陳*妮','Lv.2 建模','已完工'],['風鈴芽依','Lv.1 建模','已完工'],['深野呱樂','Lv.1 建模','已完工'],['鈴娜','Lv.3 建模','已完工'],
+  ['EIMIN','Lv.2 建模','已完工'],['Michel','Q版建模','已完工'],['迪芙琳','Lv.3 建模','已完工'],['科沃萊特 索伊拉','Lv.3 建模','已完工'],
+  ['墨水匣','Lv.3 建模','已完工'],['小林','Q版建模','已完工'],['まつ兎','Lv.3 建模','已完工'],['艾克','Lv.3 建模','已完工'],
+  ['奈亞','Q版建模','已完工'],['瑠音','Lv.2 建模','已完工'],['綾月','Lv.3 建模','已完工'],['悠島','Lv.2 建模','未開工'],
+  ['元元','Lv.2 建模','已完工'],['呱樂','Lv.3 建模','已完工'],['小菜','Lv.3 建模','已完工'],['諾克絲','Lv.3 建模','已完工'],
+  ['企鵝','Lv.3 建模','已完工'],['戮可','Lv.3 建模','已完工'],['Sora','Lv.3 建模','已完工'],['星野鈴奈','Lv.1 建模','已完工'],
+  ['柳星','Lv.3 建模','已完工'],['熾幻白月','Q版建模','已完工'],['小E','Lv.3 建模','已完工'],['奈亞','Lv.3 建模','已完工'],
+  ['迦勒','Lv.3 建模','已完工'],['蝶ここ','Lv.3 建模','身體製作中'],['米糠','Lv.3 建模','已完工'],['月見るる','Lv.1 建模','未開工']
+]};
+const PREVIEW_HOST=/claude|anthropic/i.test(location.hostname);
+function tierOf(s){const m=String(s).match(/Lv\.?\s*(\d)/i);if(m)return 'Lv.'+m[1];if(/Q/i.test(s))return 'Q版';return String(s).replace(/建模/g,'').trim()||'其他';}
+function stOf(s){s=String(s||'');if(/完工|完成|交件/.test(s))return 'done';if(!s||/未開工|未開始|排隊/.test(s))return 'wait';return 'wip';}
+function esc(t){return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function parseCSV(t){const rows=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}else if(c==='"')q=true;else if(c===','){row.push(f);f='';}else if(c==='\n'){row.push(f);rows.push(row);row=[];f='';}else if(c!=='\r')f+=c;}if(f||row.length){row.push(f);rows.push(row);}return rows;}
+async function loadLive(){
+  if(PREVIEW_HOST)throw new Error('preview');
+  const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),5000);
+  const r=await fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&headers=1',{signal:ctl.signal});
+  clearTimeout(to);if(!r.ok)throw new Error('http '+r.status);
+  const rows=parseCSV(await r.text());
+  const hi=rows.findIndex(r=>r.some(c=>c.trim()==='委託人')&&r.some(c=>c.includes('製作進度')));
+  if(hi<0)throw new Error('no header');
+  const H=rows[hi].map(c=>c.trim()),iN=H.indexOf('委託人'),iI=H.findIndex(c=>c.includes('委託項目')),iS=H.findIndex(c=>c.includes('製作進度'));
+  const out=rows.slice(hi+1).map(r=>[(r[iN]||'').trim(),(r[iI]||'').trim(),(r[iS]||'').trim()]).filter(r=>r[0]&&r[0]!=='委託人'&&r[1]);
+  if(!out.length)throw new Error('empty');
+  return out;
+}
+function renderQueue(rows,live){
+  const R=rows.map(r=>({n:r[0],tier:tierOf(r[1]),raw:r[2],st:stOf(r[2])}));
+  const done=R.filter(r=>r.st==='done'),wip=R.filter(r=>r.st==='wip'),wait=R.filter(r=>r.st==='wait');
+  const setK=(id,v)=>{const e=$(id);if(e){e.dataset.count=v;e.textContent=String(v).padStart(2,'0');}};
+  setK('#kTotal',R.length);setK('#kDone',done.length);setK('#kWip',wip.length);setK('#kWait',wait.length);
+  const hd=$('#homeDone');if(hd){hd.dataset.count=done.length;hd.textContent=String(done.length).padStart(2,'0');}
+  const sb=$('#segbar');if(sb){const [a,b,c]=sb.children;a.style.flex=done.length+' 1 0';b.style.flex=wip.length+' 1 0';c.style.flex=wait.length+' 1 0';
+    a.hidden=!done.length;b.hidden=!wip.length;c.hidden=!wait.length;sb.setAttribute('aria-label',`已完工 ${done.length}、製作中 ${wip.length}、未開工 ${wait.length}`);}
+  const act=$('#qActive');
+  if(act){const list=[...wip,...wait];
+    act.innerHTML=list.length?list.map((r,i)=>`<div class="qrow"><span class="mono qn">${String(i+1).padStart(2,'0')}</span><span class="qname"><b>${esc(r.n)}</b><span class="tag">${esc(r.tier)}</span></span><span class="qstat ${r.st}">${r.st==='wip'?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>'}${esc(r.st==='wip'?(r.raw||'製作中'):'未開工')}</span><span class="qbar ${r.st}"><i></i></span></div>`).join('')
+      :'<p class="qempty">目前沒有製作中的委託，歡迎填表🌼</p>';}
+  const tiers={};R.forEach(r=>{tiers[r.tier]=(tiers[r.tier]||0)+1;});
+  const tl=Object.entries(tiers).sort((a,b)=>b[1]-a[1]),max=Math.max(1,...tl.map(t=>t[1]));
+  const tEl=$('#qTiers');
+  if(tEl)tEl.innerHTML=tl.map(([k,v],i)=>{const name=k==='Q版'?'Q版建模':k+' 建模',pc=Math.round(v/R.length*100);return `<div class="tier" style="--i:${i}"><span class="tl">${esc(name)}</span><span class="tt"><span class="tf" style="width:${(v/max*100).toFixed(1)}%"></span></span><span class="tv">${v}</span><span class="tip">${esc(name)} · ${v} 件 · ${pc}%</span></div>`;}).join('');
+  const arc=$('#qArchive');if(arc)arc.innerHTML=done.slice().reverse().map((r,i)=>`<span class="chip" style="--i:${i}">${esc(r.n)}<small>${esc(r.tier)}</small></span>`).join('');
+  const dn=$('#qDoneN');if(dn)dn.textContent=done.length;
+  const sy=$('#sync');
+  if(sy){sy.classList.toggle('live',!!live);$('#syncMode').textContent=live?'LIVE':'SNAPSHOT';
+    const d=new Date();$('#syncText').textContent=live?`已同步排單表 · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`:`${SNAPSHOT.date} 排單表快照`;}
+  if(ready&&cur==='queue'){$$('.page.active [data-count]').forEach(countUp);}
+}
+
+/* ---------- form embed ---------- */
+const FORM_EMBED='https://docs.google.com/forms/d/e/1FAIpQLSd8EsQ72im1jA97sGdXDTaPnwL0AK_bUSPLWijZctbOSsUoQw/viewform?embedded=true';
+let frameBlocked=PREVIEW_HOST,formMounted=false,netOK=null,netCheck=null;
+function formFallback(){const fl=$('#fload'),ff=$('#ffall'),fr=$('#fstage iframe');if(fr)fr.remove();if(fl)fl.hidden=true;if(ff)ff.hidden=false;}
+document.addEventListener('securitypolicyviolation',e=>{const d=e.effectiveDirective||e.violatedDirective||'',u=e.blockedURI||'';if(/frame|child|default/.test(d)&&/google|youtube/.test(u)){frameBlocked=true;if(formMounted)formFallback();ytFallback();}});
+function mountForm(){
+  if(formMounted)return;formMounted=true;
+  (netCheck||Promise.resolve()).then(()=>{
+  if(frameBlocked||!netOK){formFallback();return;}
+  const f=document.createElement('iframe');f.className='fframe';f.title='建模委託報價/排單 表單';f.src=FORM_EMBED;
+  f.addEventListener('load',()=>setTimeout(()=>{if(frameBlocked)return;f.classList.add('on');const fl=$('#fload');if(fl)fl.hidden=true;},250));
+  $('#fstage').appendChild(f);
+  setTimeout(()=>{if(!f.classList.contains('on'))formFallback();},9000);
+  });
+}
+
+/* ---------- YouTube: channel uploads playlist (auto-updates with new uploads) ---------- */
+const YT_LIST='UUc7jnUNJyJLHF4rRkRyiAzw';
+let ytMounted=false;
+/* YouTube refuses to play (error 153) unless the embedding page has a real web address to send as its referrer:
+   a file opened from disk, an app preview or a sandboxed frame has none, so only embed on an http(s) page with a real origin. */
+const WEB_ORIGIN=/^https?:$/.test(location.protocol)&&!!window.origin&&window.origin!=='null';
+function ytFallback(){const y=$('#plScreen .yt');if(y)y.remove();const fb=$('#plScreen .pl-fallback');if(fb)fb.hidden=false;const pl=$('#player');if(pl)pl.classList.remove('live');const m=$('#plMode');if(m)m.textContent='HD ✦';}
+function probe(url,ms){return new Promise(res=>{if(PREVIEW_HOST)return res(false);const i=new Image(),t=setTimeout(()=>res(false),ms);i.onload=()=>{clearTimeout(t);res(true);};i.onerror=()=>{clearTimeout(t);res(false);};i.src=url+'?t='+Date.now();});}
+function mountYT(){
+  if(ytMounted)return;ytMounted=true;
+  if(!WEB_ORIGIN||PREVIEW_HOST)return;
+  probe('https://www.youtube.com/favicon.ico',4000).then(ok=>{
+    if(!ok||frameBlocked)return;
+    const scr=$('#plScreen');if(!scr)return;
+    const f=document.createElement('iframe');f.className='yt';f.title='露露的作品集（YouTube 播放清單）';
+    f.src='https://www.youtube.com/embed/videoseries?list='+YT_LIST+'&rel=0';
+    f.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    f.referrerPolicy='strict-origin-when-cross-origin';f.allowFullscreen=true;
+    f.addEventListener('load',()=>setTimeout(()=>{if(frameBlocked){ytFallback();return;}f.classList.add('on');const fb=$('#plScreen .pl-fallback');if(fb)fb.hidden=true;$('#player').classList.add('live');$('#plMode').textContent='PLAYLIST ▶';},250));
+    scr.appendChild(f);
+  });
+}
+
+/* ---------- scroll reveal ---------- */
+const io='IntersectionObserver' in window&&!reduce?new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);if(en.target.id==='pipe')playPipe();}}),{threshold:.15,rootMargin:'0px 0px -5% 0px'}):null;
+function armReveal(page){$$('.sr',page).forEach(el=>{if(io){el.classList.remove('in');io.observe(el);}else{el.classList.add('in');if(el.id==='pipe')playPipe();}});}
+
+/* ---------- router ---------- */
+const PAGES={home:['01','HOME','首頁'],about:['02','ABOUT','關於我'],works:['03','WORKS','作品集'],commission:['04','COMMISSION','委託說明'],queue:['05','QUEUE','目前排單'],form:['06','FORM','委託表單'],qa:['07','Q&A','常見問題'],contact:['08','CONTACT','聯絡我']};
+const pages=$$('.page'),menu=$$('.menu a, .ms-list a'),crumb=$('#crumb'),plabel=$('#plabel');
+let cur=null,ready=false,busy=false,target=null;
+function route(){const h=location.hash.slice(1);return PAGES[h]?h:'home';}
+function enter(id){
+  const page=pages.find(p=>p.dataset.page===id);
+  $$('[data-scr]',page).forEach(scramble);
+  $$('[data-count]',page).forEach(countUp);
+  armReveal(page);
+  if(id==='home')playChat();
+  if(id==='form')mountForm();
+  if(id==='works')mountYT();
+}
+function activate(id,base){
+  pages.forEach(p=>{const onp=p.dataset.page===id;p.hidden=!onp;p.classList.toggle('active',onp);if(onp)p.style.setProperty('--base',base);});
+  menu.forEach(a=>{if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  crumb.textContent=id;plabel.innerHTML=PAGES[id][0]+' / <b>'+PAGES[id][1]+'</b>';window.scrollTo(0,0);cur=id;
+  if(ready)enter(id);
+}
+function go(id){
+  if(id===cur)return;
+  if(!ready||reduce){activate(id,'0s');return;}
+  target=id;if(busy)return;
+  busy=true;const w=$('#warp'),P=PAGES[id];
+  $('#wNum').textContent=P[0];$('#wName').textContent=P[1]+' '+P[2];$('#wPath').textContent='Loading /silumi/'+id+' …';
+  w.className='in';
+  setTimeout(()=>{activate(target,'.3s');w.className='out';},600);
+  setTimeout(()=>{w.className='';busy=false;},1200);
+}
+addEventListener('hashchange',()=>{closeSheet();go(route());});
+const sheet=$('#msheet'),mbtn=$('#mbtn');
+function closeSheet(){if(!sheet.classList.contains('open'))return;sheet.classList.remove('open');mbtn.setAttribute('aria-expanded','false');}
+mbtn.addEventListener('click',()=>{sheet.classList.add('open');mbtn.setAttribute('aria-expanded','true');setTimeout(()=>{const a=sheet.querySelector('a');if(a)a.focus({preventScroll:true});},350);});
+$('#mclose').addEventListener('click',()=>{closeSheet();mbtn.focus();});
+sheet.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>closeSheet()));
+addEventListener('keydown',e=>{if(e.key==='Escape'&&sheet.classList.contains('open')){closeSheet();mbtn.focus();}});
+activate(route(),'.1s');
+renderQueue(SNAPSHOT.rows,false);
+netCheck=loadLive().then(rows=>{netOK=true;renderQueue(rows,true);}).catch(()=>{netOK=false;});
+
+/* ---------- loader ---------- */
+const LOG=[['open','silumi_database','ok'],['load','model3.json','ok'],['bind','parameters','ok'],['load','physics3.json','ok'],['sync','queue.sheet','ok'],['bloom','✿ daisy.moc3','ready']];
+const logEl=$('#ldLog');
+LOG.forEach((l,i)=>setTimeout(()=>{const li=document.createElement('li');li.innerHTML=`<b>&gt; ${l[0]}</b> ${l[1]} <span>................................</span> <em>${l[2]}</em>`;logEl.appendChild(li);},reduce?0:150+i*320));
+const t0=performance.now(),DUR=reduce?150:2300,pctEl=$('#ldPct'),barEl=$('#ldBar'),leftEl=$('#ldLeft');
+function ld(n){const k=Math.min(1,(n-t0)/DUR),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+  pctEl.textContent=String(Math.round(e*100)).padStart(3,'0');barEl.style.width=(e*100)+'%';leftEl.textContent=Math.max(0,Math.ceil((DUR-(n-t0))/1000))+' sec left';
+  if(k<1)requestAnimationFrame(ld);else{barEl.style.background='#ee5e98';leftEl.textContent='done ✿';setTimeout(finish,reduce?0:260);}}
+function finish(){ready=true;document.body.classList.add('ready');$('#loader').classList.add('done');enter(cur);setTimeout(()=>{const l=$('#loader');if(l)l.remove();},1300);}
+requestAnimationFrame(ld);
+})();
+</script>
+</body>
+</html>
